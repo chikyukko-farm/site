@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ちきゅうっ子ファーム ／ もくねん工房 ご提案</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --soil:#2f2a24;        /* 土・濃茶 */
+    --soil-soft:#4a4138;
+    --paper:#f6f1e7;       /* 生成りの紙 */
+    --paper-deep:#ece4d4;
+    --leaf:#5c7148;        /* 葉 */
+    --leaf-deep:#3f5232;
+    --clay:#bf6b3f;        /* 素焼き・アクセント */
+    --gold:#c9a14a;        /* 稲 */
+    --line:#d6cbb5;
+    --muted:#8a7f6c;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    background:var(--paper);
+    color:var(--soil);
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 28px}
+
+  /* ---- hero ---- */
+  .hero{
+    background:
+      radial-gradient(circle at 80% -10%, rgba(201,161,74,.18), transparent 45%),
+      linear-gradient(160deg,var(--soil) 0%,var(--leaf-deep) 130%);
+    color:var(--paper);
+    padding:88px 0 72px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:rgba(246,241,231,.25);
+  }
+  .hero .eyebrow{
+    font-family:'Zen Old Mincho',serif;
+    letter-spacing:.5em;font-size:13px;color:var(--gold);
+    margin-bottom:26px;padding-left:.5em;
+  }
+  .hero h1{
+    font-family:'Zen Old Mincho',serif;
+    font-weight:900;font-size:46px;line-height:1.35;letter-spacing:.02em;
+  }
+  .hero h1 .sub{display:block;font-size:21px;font-weight:500;color:var(--paper-deep);margin-top:18px;letter-spacing:.08em}
+  .hero .meta{
+    margin-top:38px;display:flex;gap:30px;flex-wrap:wrap;
+    font-size:14px;color:var(--paper-deep);border-top:1px solid rgba(246,241,231,.2);padding-top:20px
+  }
+  .hero .meta b{color:var(--gold);font-weight:700;margin-right:8px;font-family:'Zen Old Mincho',serif}
+
+  /* ---- section frame ---- */
+  section{padding:66px 0}
+  section:nth-of-type(even){background:var(--paper-deep)}
+  .label{
+    font-family:'Zen Old Mincho',serif;
+    display:inline-flex;align-items:baseline;gap:14px;margin-bottom:28px;
+  }
+  .label .no{
+    font-size:15px;color:var(--clay);letter-spacing:.2em;font-weight:700;
+    border:1px solid var(--clay);border-radius:2px;padding:3px 10px;
+  }
+  .label h2{font-size:29px;font-weight:900;letter-spacing:.03em}
+  .lead{font-size:16px;color:var(--soil-soft);max-width:680px;margin-bottom:34px}
+
+  /* ---- cards ---- */
+  .grid{display:grid;gap:18px}
+  .g2{grid-template-columns:1fr 1fr}
+  .card{
+    background:var(--paper);border:1px solid var(--line);border-radius:6px;
+    padding:26px 26px 24px;position:relative;
+  }
+  section:nth-of-type(even) .card{background:#fbf7ee}
+  .card h3{
+    font-family:'Zen Old Mincho',serif;font-size:19px;font-weight:700;
+    margin-bottom:12px;color:var(--leaf-deep);
+    display:flex;align-items:center;gap:10px;
+  }
+  .card h3 .tag{
+    font-family:'Zen Kaku Gothic New';font-size:11px;font-weight:700;
+    background:var(--leaf);color:var(--paper);padding:2px 9px;border-radius:20px;letter-spacing:.05em;
+  }
+  .card p{font-size:14.5px;color:var(--soil-soft)}
+  .card ul{list-style:none;margin-top:6px}
+  .card li{font-size:14.5px;color:var(--soil-soft);padding:4px 0 4px 20px;position:relative}
+  .card li::before{content:"";position:absolute;left:2px;top:13px;width:6px;height:6px;background:var(--clay);border-radius:50%}
+
+  /* ---- fee model ---- */
+  .fee{
+    background:var(--paper);border:2px solid var(--soil);border-radius:8px;overflow:hidden;
+  }
+  .fee .head{
+    background:var(--soil);color:var(--paper);padding:20px 28px;
+    display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px
+  }
+  .fee .head .name{font-family:'Zen Old Mincho',serif;font-size:20px;font-weight:700;letter-spacing:.05em}
+  .fee .head .price{font-family:'Zen Old Mincho',serif;font-size:30px;font-weight:900;color:var(--gold)}
+  .fee .head .price small{font-size:14px;font-weight:500;color:var(--paper-deep);margin-left:4px}
+  .fee .body{padding:8px 28px 22px}
+  .fee .row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px dashed var(--line);font-size:15px}
+  .fee .row:last-child{border-bottom:none}
+  .fee .row .t b{font-family:'Zen Old Mincho',serif;color:var(--leaf-deep);font-size:15.5px}
+  .fee .row .t span{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+  .fee .row .v{font-size:13px;color:var(--soil-soft);text-align:right;white-space:nowrap;padding-left:16px}
+
+  /* ---- 3 plans 松竹梅 ---- */
+  .plans{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:14px;align-items:stretch;margin-bottom:8px}
+  .plan{
+    background:var(--paper);border:1px solid var(--line);border-radius:8px;
+    padding:24px 22px 22px;display:flex;flex-direction:column;position:relative
+  }
+  section:nth-of-type(even) .plan{background:#fbf7ee}
+  .plan .rank{font-family:'Zen Old Mincho',serif;font-size:14px;color:var(--muted);letter-spacing:.3em;margin-bottom:8px}
+  .plan .pname{font-family:'Zen Old Mincho',serif;font-size:17px;font-weight:700;color:var(--soil);margin-bottom:14px}
+  .plan .pprice{font-family:'Zen Old Mincho',serif;font-size:26px;font-weight:900;color:var(--soil);line-height:1;margin-bottom:4px}
+  .plan .pprice small{font-size:13px;font-weight:500;color:var(--muted);margin-left:3px}
+  .plan .punit{font-size:12px;color:var(--muted);margin-bottom:18px}
+  .plan ul{list-style:none;margin-top:auto}
+  .plan li{font-size:13px;color:var(--soil-soft);padding:6px 0 6px 18px;position:relative;border-top:1px dashed var(--line)}
+  .plan li:first-child{border-top:none}
+  .plan li::before{content:"";position:absolute;left:2px;top:13px;width:5px;height:5px;background:var(--leaf);border-radius:50%}
+  .plan.honmei{
+    border:2px solid var(--leaf-deep);background:linear-gradient(180deg,#eef2e6,#fbf7ee);
+    transform:translateY(-8px);box-shadow:0 8px 24px rgba(63,82,50,.12)
+  }
+  section:nth-of-type(even) .plan.honmei{background:linear-gradient(180deg,#eef2e6,#fff)}
+  .plan.honmei .badge{
+    position:absolute;top:-13px;left:50%;transform:translateX(-50%);
+    background:var(--leaf-deep);color:var(--paper);font-family:'Zen Old Mincho',serif;
+    font-size:12px;font-weight:700;letter-spacing:.15em;padding:4px 16px;border-radius:20px;white-space:nowrap
+  }
+  .plan.honmei .pprice{color:var(--leaf-deep);font-size:30px}
+  .plan.honmei li::before{background:var(--clay)}
+  .plan-note{font-size:12.5px;color:var(--muted);text-align:center;margin:14px 0 4px}
+  @media(max-width:680px){.plans{grid-template-columns:1fr}.plan.honmei{transform:none}}
+
+  .opt{
+    margin-top:22px;background:#fbf7ee;border:1px solid var(--line);border-left:4px solid var(--clay);
+    border-radius:6px;padding:22px 26px
+  }
+  .opt h4{font-family:'Zen Old Mincho',serif;font-size:16px;color:var(--clay);margin-bottom:6px;font-weight:700}
+  .opt p{font-size:13.5px;color:var(--soil-soft);margin-bottom:14px}
+  .opt .chips{display:flex;gap:10px;flex-wrap:wrap}
+  .opt .chip{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:8px 14px;font-size:13.5px}
+  .opt .chip b{color:var(--soil);font-family:'Zen Old Mincho',serif}
+  .opt .chip.fixed{border-color:var(--clay);background:#f6e9dd}
+  .opt .chip.fixed b{color:var(--clay)}
+
+  /* ---- issue / focus ---- */
+  .focus{
+    background:linear-gradient(135deg,var(--leaf-deep),var(--leaf));color:var(--paper);
+    border-radius:8px;padding:30px 32px;margin-top:8px
+  }
+  .focus .k{font-family:'Zen Old Mincho',serif;color:var(--gold);font-size:13px;letter-spacing:.2em;margin-bottom:10px}
+  .focus h3{font-family:'Zen Old Mincho',serif;font-size:22px;font-weight:700;margin-bottom:12px;line-height:1.5}
+  .focus p{font-size:14.5px;color:var(--paper-deep)}
+  .focus .num{font-family:'Zen Old Mincho',serif;font-size:40px;font-weight:900;color:var(--gold);line-height:1;margin-right:6px}
+
+  /* ---- agenda list ---- */
+  .agenda{counter-reset:ag;display:grid;gap:0}
+  .agenda .item{
+    display:grid;grid-template-columns:54px 1fr;gap:20px;align-items:start;
+    padding:22px 0;border-top:1px solid var(--line)
+  }
+  .agenda .item:last-child{border-bottom:1px solid var(--line)}
+  .agenda .item .n{
+    font-family:'Zen Old Mincho',serif;font-size:30px;font-weight:900;color:var(--clay);line-height:1
+  }
+  .agenda .item h3{font-family:'Zen Old Mincho',serif;font-size:18px;font-weight:700;margin-bottom:5px}
+  .agenda .item p{font-size:14px;color:var(--soil-soft)}
+
+  /* ---- check ---- */
+  .check{display:grid;gap:12px;margin-top:8px}
+  .check .c{display:flex;gap:14px;align-items:flex-start;background:#fbf7ee;border:1px solid var(--line);border-radius:6px;padding:16px 20px}
+  .check .c .ic{font-size:13px;font-weight:700;font-family:'Zen Old Mincho',serif;padding:3px 10px;border-radius:4px;white-space:nowrap}
+  .check .c.verify .ic{background:#f6e9dd;color:var(--clay);border:1px solid var(--clay)}
+  .check .c.confirm .ic{background:#e7eede;color:var(--leaf-deep);border:1px solid var(--leaf)}
+  .check .c p{font-size:14px;color:var(--soil-soft)}
+
+  footer{background:var(--soil);color:var(--paper-deep);text-align:center;padding:30px;font-size:12.5px;letter-spacing:.1em;font-family:'Zen Old Mincho',serif}
+
+  /* ---- simulator 3-pattern ---- */
+  .sim{margin-top:8px}
+  .sim .aibar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:linear-gradient(135deg,var(--leaf-deep),var(--leaf));border-radius:8px;padding:16px 20px;margin-bottom:18px}
+  .sim .aibar .txt{flex:1;min-width:200px}
+  .sim .aibar .txt b{font-family:'Zen Old Mincho',serif;color:var(--gold);font-size:15px;display:block;margin-bottom:2px}
+  .sim .aibar .txt span{font-size:12.5px;color:var(--paper-deep)}
+  .sim .aibtn{background:var(--gold);color:var(--soil);border:none;font-family:'Zen Old Mincho',serif;font-weight:700;font-size:13.5px;padding:11px 20px;border-radius:6px;cursor:pointer;letter-spacing:.05em;transition:transform .1s}
+  .sim .aibtn:active{transform:scale(.97)}
+  .sim .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .sim .col{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:18px 16px;display:flex;flex-direction:column}
+  section:nth-of-type(even) .sim .col{background:#fbf7ee}
+  .sim .col.best{border:2px solid var(--leaf-deep);box-shadow:0 6px 18px rgba(63,82,50,.1)}
+  .sim .col .pat{font-family:'Zen Old Mincho',serif;font-size:16px;font-weight:900;color:var(--soil);text-align:center;margin-bottom:3px;letter-spacing:.1em}
+  .sim .col .patsub{font-size:11px;color:var(--muted);text-align:center;margin-bottom:14px;min-height:14px}
+  .sim .col .field{margin-bottom:12px}
+  .sim .col .field label{font-size:11.5px;color:var(--soil-soft);display:block;margin-bottom:4px}
+  .sim .col .field input{width:100%;border:1px solid var(--line);border-radius:5px;padding:7px 9px;font-size:13px;font-family:'Zen Kaku Gothic New';color:var(--soil);background:var(--paper)}
+  section:nth-of-type(even) .sim .col .field input{background:#fff}
+  .sim .col .field input:focus{outline:none;border-color:var(--leaf)}
+  .sim .col .res{margin-top:auto;padding-top:14px;border-top:1px dashed var(--line)}
+  .sim .col .res .rline{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+  .sim .col .res .rline .rl{font-size:11px;color:var(--muted)}
+  .sim .col .res .rline .rv{font-family:'Zen Old Mincho',serif;font-size:13px;font-weight:700;color:var(--soil-soft)}
+  .sim .col .res .month{margin-top:8px}
+  .sim .col .res .month .rl{font-size:12px;color:var(--soil)}
+  .sim .col .res .month .rv{font-size:22px;color:var(--leaf-deep);font-weight:900}
+  .sim .col .res .year .rv{font-size:13px;color:var(--clay)}
+  .sim .winner{margin-top:16px;background:var(--paper-deep);border-left:4px solid var(--clay);border-radius:0 6px 6px 0;padding:14px 18px;font-size:13px;color:var(--soil-soft);line-height:1.7}
+  section:nth-of-type(even) .sim .winner{background:var(--paper)}
+  @media(max-width:680px){.sim .cols{grid-template-columns:1fr}}
+
+  /* ---- KPI dashboard ---- */
+  .kpi{margin-top:8px}
+  .kpi .biz{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:20px 22px;margin-bottom:16px}
+  section:nth-of-type(even) .kpi .biz{background:#fbf7ee}
+  .kpi .biz .bizhead{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+  .kpi .biz .bizhead .bt{font-family:'Zen Old Mincho',serif;font-size:17px;font-weight:900;color:var(--soil)}
+  .kpi .biz .bizhead .bx{font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;color:var(--paper)}
+  .kpi .inputs{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:16px}
+  .kpi .inp label{font-size:11.5px;color:var(--soil-soft);display:block;margin-bottom:4px}
+  .kpi .inp input{width:100%;border:1px solid var(--line);border-radius:5px;padding:8px 9px;font-size:14px;font-family:'Zen Kaku Gothic New';color:var(--soil);background:var(--paper)}
+  section:nth-of-type(even) .kpi .inp input{background:#fff}
+  .kpi .inp input:focus{outline:none;border-color:var(--leaf)}
+  .kpi .out{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+  .kpi .ocard{background:var(--paper-deep);border-radius:6px;padding:14px 16px}
+  section:nth-of-type(even) .kpi .ocard{background:var(--paper)}
+  .kpi .ocard .ol{font-size:11px;color:var(--muted);margin-bottom:5px}
+  .kpi .ocard .ov{font-family:'Zen Old Mincho',serif;font-size:23px;font-weight:900;color:var(--leaf-deep);line-height:1}
+  .kpi .ocard .ov small{font-size:12px;color:var(--muted);margin-left:3px;font-weight:500}
+  .kpi .prog{margin-top:4px}
+  .kpi .prog .pl{display:flex;justify-content:space-between;font-size:11.5px;color:var(--soil-soft);margin-bottom:5px}
+  .kpi .prog .pl b{font-family:'Zen Old Mincho',serif;color:var(--clay)}
+  .kpi .ptrack{background:var(--paper-deep);border-radius:20px;height:14px;overflow:hidden}
+  section:nth-of-type(even) .kpi .ptrack{background:var(--paper)}
+  .kpi .pfill{height:100%;border-radius:20px;transition:width .3s;min-width:3px}
+  .kpi .total{background:linear-gradient(135deg,var(--soil),var(--leaf-deep));color:var(--paper);border-radius:8px;padding:22px 26px;margin-top:8px}
+  .kpi .total .tl{font-family:'Zen Old Mincho',serif;color:var(--gold);font-size:12px;letter-spacing:.2em;margin-bottom:10px}
+  .kpi .total .tgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+  .kpi .total .tg .tgl{font-size:11.5px;color:var(--paper-deep);margin-bottom:5px}
+  .kpi .total .tg .tgv{font-family:'Zen Old Mincho',serif;font-size:24px;font-weight:900;color:var(--gold);line-height:1}
+  .kpi .total .tg .tgv small{font-size:12px;color:var(--paper-deep);font-weight:500;margin-left:2px}
+  .kpi .chart{margin-top:16px;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:20px}
+  section:nth-of-type(even) .kpi .chart{background:#fbf7ee}
+  .kpi .chart .ct{font-family:'Zen Old Mincho',serif;font-size:14px;font-weight:700;color:var(--soil);margin-bottom:16px}
+  .kpi .chrow{display:flex;align-items:center;gap:12px;margin-bottom:11px}
+  .kpi .chrow .cn{font-size:12.5px;min-width:96px;color:var(--soil-soft)}
+  .kpi .chrow .ctrack{flex:1;background:var(--paper-deep);border-radius:5px;height:26px;position:relative;overflow:hidden}
+  section:nth-of-type(even) .kpi .chrow .ctrack{background:var(--paper)}
+  .kpi .chrow .cfill{height:100%;border-radius:5px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;min-width:4px;transition:width .3s}
+  .kpi .chrow .cfill span{font-size:11px;font-weight:700;color:var(--paper);font-family:'Zen Old Mincho',serif;white-space:nowrap}
+  @media(max-width:680px){.kpi .total .tgrid{grid-template-columns:1fr}.kpi .out{grid-template-columns:1fr}}
+
+  @media(max-width:680px){
+    .hero h1{font-size:33px}
+    .g2{grid-template-columns:1fr}
+    .fee .head{flex-direction:column}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">奥 武 蔵 ・ 地 域 と 育 て る 仕 事</div>
+    <h1>ちきゅうっ子ファーム／奥武蔵ブランド
+      <span class="sub">これまでの整理と、これから進める方向 ── 2026.06.09</span>
+    </h1>
+    <div class="meta">
+      <div><b>この資料</b>ここまでに見えてきた現状と、定まってきた方向性の確認</div>
+      <div><b>形式</b>オンライン共有</div>
+    </div>
+  </div>
+</header>
+
+<!-- 1 -->
+<section>
+  <div class="wrap">
+    <div class="label"><span class="no">01</span><h2>全体像 ── 2つの仕事を分けて考える</h2></div>
+    <p class="lead">これまで広がった話を、性質の違う2つの箱に整理しました。ひとつは「人を集めて畑をやる」活動、もうひとつは「モノを売る・地域でまとめる」活動です。</p>
+    <div class="grid g2">
+      <div class="card">
+        <h3><span class="tag">人の箱</span>ちきゅうっ子ファーム</h3>
+        <p>共同家庭菜園・しぜん農村塾。人を集めて畑をやる活動。お金より「つながり・参加」が中心。</p>
+        <ul>
+          <li>公式LINEの作り直し・申込導線</li>
+          <li>申込シート・HP・参加までの案内</li>
+          <li>無料化・自律分散の方向（後述）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="tag" style="background:var(--clay)">モノを売る箱</span>奥武蔵ブランド</h3>
+        <p>地域の商品をまとめて売る活動。ここで利益を出す。もくねん工房はこの中の最初の1社。</p>
+        <ul>
+          <li>もくねん工房（ペレ炭）── 第1商店</li>
+          <li>ポータルサイト（農家が登録する場所）</li>
+          <li>認証制度（奥武蔵の品質マーク）</li>
+        </ul>
+      </div>
+    </div>
+    <p class="plan-note" style="margin-top:16px">以降、「人の箱」＝03、「モノを売る箱」＝04〜07 の順にそれぞれの中身を整理しています。</p>
+  </div>
+</section>
+
+<!-- 2 -->
+<section>
+  <div class="wrap">
+    <div class="label"><span class="no">02</span><h2>【人の箱】最優先課題 ── 125名が動いていない</h2></div>
+    <p class="lead">公式LINEには登録があるのに、参加につながっていない。原因はメッセージの良し悪しの前に、情報設計にあります。</p>
+    <div class="focus">
+      <div class="k">最 優 先 で 解 く</div>
+      <h3><span class="num">125</span>名の登録者が、参加に進めていない</h3>
+      <p>「いつ・どこで・何をしているか」「行けばメンバーがいるのか」が伝わっていない状態。まず “参加までの道順” を一本に整え、迷わず申し込める入口をつくります。LINE文面の改善はその次の工程です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section>
+  <div class="wrap">
+    <div class="label"><span class="no">03</span><h2>【奥武蔵ブランド】もくねん工房 ── 第1商店</h2></div>
+    <p class="lead">奥武蔵ブランドの最初の1社。まず1つを「売れる商品」として完成させ、それをポータルの見本にします。ペレ炭を軸に、同じ作り方で展開できる商材へ広げる。2026年3月末までに100セット完売が目標。</p>
+    <div class="grid g2">
+      <div class="card">
+        <h3>STEP 1 ── 商材を固める</h3>
+        <p>ペレ炭を軸に、誰に・いくらで・どう届けるかを設計し直す。価格やパッケージ、商工会認定が販売の足かせになっていないかも確認。</p>
+      </div>
+      <div class="card">
+        <h3>STEP 2 ── 横展開を提案</h3>
+        <p>同じ製造の強みで作れる商材を洗い出し、ラインナップとして提案。代理店として扱う商品の幅を広げる。</p>
+      </div>
+    </div>
+    <div class="check" style="margin-top:18px">
+      <div class="c verify"><span class="ic">未確定</span><p>もくねん工房が何を原料に何を作れるか（製造の強み・量産可否）。横展開を考える前提情報。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 奥武蔵ポータル -->
+<section>
+  <div class="wrap">
+    <div class="label"><span class="no">04</span><h2>【奥武蔵ブランド】ポータル ── 収益の考え方</h2></div>
+    <p class="lead">課金のかけ方を3パターン（A・B・C）並べて比較できます。各項目の料金や数値は自由に書き換えられます。まず「AIおまかせ」で3案を自動入力し、そこから調整するのがおすすめです。</p>
+
+    <div class="grid g2" style="margin-bottom:20px">
+      <div class="card">
+        <h3>無料で集める</h3>
+        <p>掲載は無料。農家にとって「自分では作れないネット上の売り場を、奥武蔵ブランドの信用付きで持てる」のが登録の動機。まず数を集める入口。</p>
+      </div>
+      <div class="card">
+        <h3>作り込みで稼ぐ</h3>
+        <p>テンプレートのページは無料。プロ撮影・動画・ブランド記事などの作り込みはカスタム制作として課金。ここが立ち上げ期の現金の柱。</p>
+      </div>
+    </div>
+
+    <div class="sim">
+      <div class="aibar">
+        <div class="txt">
+          <b>AIおまかせプラン</b>
+          <span>これまでの議論の結論（無料掲載で集める・制作が現金の柱・成果報酬は将来）をA/B/Cに自動入力します</span>
+        </div>
+        <button class="aibtn" id="sim-ai">3パターンを自動で埋める</button>
+      </div>
+
+      <div class="cols" id="sim-cols"></div>
+
+      <div class="winner" id="sim-winner"></div>
+    </div>
+
+    <div class="check" style="margin-top:18px">
+      <div class="c verify"><span class="ic">要検証</span><p>AIおまかせの初期値（制作単価5〜12万、成果報酬10〜15%）は業界相場と議論の結論に基づく仮置き。実際の制作単価が決まれば各欄を書き換える。成果報酬は決済をポータルで持てる段階に進んでから。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 差別化 -->
+<section>
+  <div class="wrap">
+    <div class="label"><span class="no">05</span><h2>【奥武蔵ブランド】見せ方の前提 ── 「新鮮」では埋もれる</h2></div>
+    <p class="lead">近隣マルシェのチラシを見ると、参加農家がそろって「新鮮・旬・こだわり・体にやさしい」で説明され、写真もどれも似たカゴ盛り。結果、お客様の記憶には「埼玉の野菜がいっぱいあった」しか残りません。</p>
+    <div class="focus" style="background:linear-gradient(135deg,#7a5230,#bf6b3f)">
+      <div class="k">差 別 化 の 原 則</div>
+      <h3>誰でも言える長所は、長所として働かない</h3>
+      <p>「新鮮」「こだわり」は否定する人がいない言葉なので、全員が横並びになります。奥武蔵ポータルやちきゅうっ子の見せ方は、最初から「人（生産者の顔・物語）」か「特別な一品」のどちらかを必ず立てる。“新鮮野菜あります”のページは作りません。</p>
+    </div>
+    <div class="grid g2" style="margin-top:18px">
+      <div class="card">
+        <h3>人で覚えさせる</h3>
+        <p>野菜のカゴ盛りではなく、農家本人の顔・畑・物語を出す。「◯◯さんのトマト」として人に紐づけて記憶に残す。</p>
+      </div>
+      <div class="card">
+        <h3>一品で覚えさせる</h3>
+        <p>「野菜全般」をやめ、忘れられない一品（在来種・珍しい野菜・体験）を旗にする。“いろいろ”は消えるが“あの一品”は残る。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 共同家庭菜園の再設計 -->
+<section>
+  <div class="wrap">
+    <div class="label"><span class="no">06</span><h2>【人の箱】共同家庭菜園の再設計 ── 加藤さん提案への回答</h2></div>
+    <p class="lead">「お客様ビジネスをやめ、参加者みんなで運営する自律分散型へ。価格は下げ、できれば無料に。マネタイズは観光と認証で」という提案。方向性に賛同したうえで、詰めておきたい論点を1つ挙げます。</p>
+
+    <div class="grid g2" style="margin-bottom:18px">
+      <div class="card" style="border-left:4px solid var(--leaf)">
+        <h3><span class="tag">賛同</span>無料化・自律分散へ</h3>
+        <p>費用を取ってお客様として迎えると、参加者は受け身に固定され、運営の手間が増える。土地を貸すシニアも月2,500円では動かない。動機は金額でなく「つながり・居場所・社会貢献」。課金をやめる判断は構造的に正しい。</p>
+      </div>
+      <div class="card" style="border-left:4px solid var(--leaf)">
+        <h3><span class="tag">賛同</span>認証制度をつくる</h3>
+        <p>奥武蔵野菜の品質を明確化する認証は、地域ブランドの“胴元”になれる打ち手。LTVの観点でも握るべき中核。共同菜園は「人が常に畑を見ている」状態を作れるので、現地確認のコストを運営の副産物にできる。</p>
+      </div>
+    </div>
+
+    <div class="focus" style="background:linear-gradient(135deg,var(--leaf-deep),var(--leaf))">
+      <div class="k">詰 め て お き た い 論 点</div>
+      <h3>無料化（今すぐ・確実な減収）と観光収益（将来・不確実）の間の空白</h3>
+      <p>家庭菜園を無料にすれば収入は確実に今へります。一方、観光マネタイズは「いつ・何人・客単価いくら」がまだ未設計で、立ち上がるまで時間がかかります。その間の運営費を誰がどう負担するか――ここを決めずに無料化だけ先行すると、運営が金銭的に持ちません。無料化は賛成、ただし“つなぎの収入”をセットで設計します。</p>
+    </div>
+
+    <div class="check" style="margin-top:18px">
+      <div class="c confirm"><span class="ic">論点A</span><p>認証は「ロゴ」ではなく「現地確認・栽培記録・基準違反でマク取消」という検証の中身があって初めて信用される（先行する自然栽培認証もすべてこの形）。奥武蔵認証も“中身”から設計する。</p></div>
+      <div class="c verify"><span class="ic">論点B</span><p>観光収益が立ち上がるまでの「つなぎの収入」をどこから出すか。会費を完全無料にするのか、最小限残すのか、別の原資（補助金・協賛・制作受託）で埋めるのか。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 -->
+<section>
+  <div class="wrap">
+    <div class="label"><span class="no">07</span><h2>これから進める項目</h2></div>
+    <p class="lead">ここまでの整理を踏まえ、動かしていく項目を並べます。順番と優先度の目安です。</p>
+    <div class="agenda">
+      <div class="item"><div class="n">壱</div><div><h3>本体の足元タスク</h3><p>LINE・申込シート・HP。最優先は125名の参加導線づくり。</p></div></div>
+      <div class="item"><div class="n">弐</div><div><h3>もくねん工房を進める</h3><p>動画・ECの可否、ペレ炭を軸に商材を固める→横展開。</p></div></div>
+      <div class="item"><div class="n">参</div><div><h3>共同家庭菜園の方針</h3><p>無料化・自律分散の方向。観光収益までの「つなぎの収入」と認証の中身を設計する。</p></div></div>
+      <div class="item"><div class="n">肆</div><div><h3>体制と共有方法</h3><p>見せ方・フォーマットは西川が責任を持つ。共有はGoogle Drive。</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- KPI dashboard -->
+<section>
+  <div class="wrap">
+    <div class="label"><span class="no">08</span><h2>数字で見る ── KPIダッシュボード</h2></div>
+    <p class="lead">各事業の数字を入れると、売上・目標達成率・収穫祭までの全体像がその場で見えます。空欄は仮の数字でかまいません。打ち合わせで実数を入れて動かしてください。</p>
+
+    <div class="kpi">
+
+      <div class="aibar" style="margin-bottom:18px">
+        <div class="txt">
+          <b>AIおすすめ値を入れる</b>
+          <span>これまでの議論とリサーチ（市場相場・目標値）に基づく現実的な初期数字を一括で入れます。そこから実数に書き換えてください</span>
+        </div>
+        <button class="aibtn" id="kpi-ai">おすすめ値を入れる</button>
+      </div>
+
+      <!-- 事業1 ちきゅうっ子 -->
+      <div class="biz">
+        <div class="bizhead"><span class="bx" style="background:var(--leaf)">人の箱</span><span class="bt">ちきゅうっ子ファーム（共同家庭菜園）</span></div>
+        <div class="inputs">
+          <div class="inp"><label>会員数（組）</label><input type="number" id="k1-members" value="0" min="0"></div>
+          <div class="inp"><label>月会費（円/組）</label><input type="number" id="k1-fee" value="2500" min="0" step="500"></div>
+          <div class="inp"><label>目標会員数（組）</label><input type="number" id="k1-goal" value="20" min="1"></div>
+        </div>
+        <div class="out">
+          <div class="ocard"><div class="ol">月間の会費収入</div><div class="ov" id="k1-rev">¥0</div></div>
+          <div class="ocard"><div class="ol">年間に換算</div><div class="ov" id="k1-annual">¥0</div></div>
+        </div>
+        <div class="prog">
+          <div class="pl"><span>会員目標の達成率（11/23収穫祭まで）</span><b id="k1-pct">0%</b></div>
+          <div class="ptrack"><div class="pfill" id="k1-bar" style="width:0%;background:var(--leaf)"></div></div>
+        </div>
+      </div>
+
+      <!-- 事業2 もくねん -->
+      <div class="biz">
+        <div class="bizhead"><span class="bx" style="background:var(--clay)">奥武蔵</span><span class="bt">もくねん工房（ペレ炭販売）</span></div>
+        <div class="inputs">
+          <div class="inp"><label>売れたセット数</label><input type="number" id="k2-sold" value="0" min="0"></div>
+          <div class="inp"><label>1セット単価（円）</label><input type="number" id="k2-price" value="6600" min="0" step="100"></div>
+          <div class="inp"><label>仕入れ原価（円/セット）</label><input type="number" id="k2-cost" value="4000" min="0" step="100"></div>
+          <div class="inp"><label>目標セット数（3月末）</label><input type="number" id="k2-goal" value="100" min="1"></div>
+        </div>
+        <div class="out">
+          <div class="ocard"><div class="ol">粗利（売上−原価）</div><div class="ov" id="k2-profit">¥0</div></div>
+          <div class="ocard"><div class="ol">売上高</div><div class="ov" id="k2-sales">¥0</div></div>
+        </div>
+        <div class="prog">
+          <div class="pl"><span>100セット完売の達成率（2026/3末まで）</span><b id="k2-pct">0%</b></div>
+          <div class="ptrack"><div class="pfill" id="k2-bar" style="width:0%;background:var(--clay)"></div></div>
+        </div>
+      </div>
+
+      <!-- 事業3 ポータル -->
+      <div class="biz">
+        <div class="bizhead"><span class="bx" style="background:var(--clay)">奥武蔵</span><span class="bt">奥武蔵ポータル（農家登録）</span></div>
+        <div class="inputs">
+          <div class="inp"><label>登録農家数</label><input type="number" id="k3-farms" value="0" min="0"></div>
+          <div class="inp"><label>カスタム制作 件数/月</label><input type="number" id="k3-custom" value="0" min="0"></div>
+          <div class="inp"><label>制作単価（円/件）</label><input type="number" id="k3-price" value="80000" min="0" step="5000"></div>
+          <div class="inp"><label>目標農家数（収穫祭）</label><input type="number" id="k3-goal" value="10" min="1"></div>
+        </div>
+        <div class="out">
+          <div class="ocard"><div class="ol">制作の月間収入</div><div class="ov" id="k3-rev">¥0</div></div>
+          <div class="ocard"><div class="ol">年間に換算</div><div class="ov" id="k3-annual">¥0</div></div>
+        </div>
+        <div class="prog">
+          <div class="pl"><span>10農家登録の達成率（11/23収穫祭まで）</span><b id="k3-pct">0%</b></div>
+          <div class="ptrack"><div class="pfill" id="k3-bar" style="width:0%;background:var(--clay)"></div></div>
+        </div>
+      </div>
+
+      <!-- 合計 -->
+      <div class="total">
+        <div class="tl">3 事 業 の 合 計（ 月 間 ）</div>
+        <div class="tgrid">
+          <div class="tg"><div class="tgl">月間の収入合計</div><div class="tgv" id="kt-month">¥0</div></div>
+          <div class="tg"><div class="tgl">年間に換算</div><div class="tgv" id="kt-year">¥0</div></div>
+          <div class="tg"><div class="tgl">3目標の平均達成率</div><div class="tgv" id="kt-pct">0<small>%</small></div></div>
+        </div>
+      </div>
+
+      <!-- 収入の比較チャート -->
+      <div class="chart">
+        <div class="ct">事業別の月間収入（棒の長さで比較）</div>
+        <div id="kt-chart"></div>
+      </div>
+
+    </div>
+
+    <div class="check" style="margin-top:18px">
+      <div class="c verify"><span class="ic">入力前提</span><p>初期値は仮置き（会費2,500円・ペレ炭6,600円・原価4,000円・制作8万円）。実数を入れると全グラフが連動して動く。原価や単価は先方確認後に上書きする。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section>
+  <div class="wrap">
+    <div class="label"><span class="no">09</span><h2>リサーチで分かったこと</h2></div>
+    <p class="lead">前回まで未確定だった点を調べました。事実が取れたものと、なお先方に直接聞くべきものを分けています。</p>
+    <div class="check">
+      <div class="c confirm"><span class="ic">判明</span><p>もくねん工房＝株式会社もくねん。特許第5859777号「ペレット状炭の燃焼方法と開発装置」を保有。原料は製材で廃棄される杉・ヒノキの樹皮。製造は「ペレット成型→炭化」の工程。一般のペレット製造では樹皮以外に木くず・端材・他のバイオマスも原料化できるため、横展開の技術的な余地はある。ただし量産能力（月産量）は先方に要確認。</p></div>
+      <div class="c confirm"><span class="ic">判明</span><p>体験農園・観光農園の収益源は複数ある：入園料・収穫体験料、収穫物の直売、加工品（ジャム等）、カフェ併設、体験プログラム、季節イベント、直売所、EC。単一でなく組み合わせて安定させるのが定石。</p></div>
+      <div class="c confirm"><span class="ic">判明</span><p>「つなぎの収入」候補として補助金も実在：都市農地・体験農園の普及事業など、自治体が整備・運営経費を補助する制度がある。飯能市・埼玉県の該当制度は個別に確認する価値あり。</p></div>
+      <div class="c confirm"><span class="ic">市場</span><p>キャンプ用品の世界市場は2025年277億ドル→2033年474億ドル（年6.9%成長）と拡大見込み。とくに「環境に優しいギア」が伸び、アウトドア愛好家の約7割が環境配慮製品に割高でも払う意向（OIA調査）。ペレ炭の「廃材アップサイクル・国産」は、この伸びる層に正面から刺さる。</p></div>
+      <div class="c confirm"><span class="ic">市場</span><p>ただし日本国内のキャンプ市場はコロナ後ブームが沈静化し、エントリー層・一回限り層は減少（矢野経済2025）。つまり「とりあえず安い炭」では戦えず、ペレ炭は“手軽さ・国産・物語”で選ぶ本格層に絞るのが正解。これは前段の差別化（新鮮では埋もれる）と同じ結論。</p></div>
+      <div class="c confirm"><span class="ic">販路</span><p>有機・自然栽培野菜の最有力販路は「学校給食」。自治体が地元有機農産物を全量買い上げると宣言すれば、農家は売り先を心配せず栽培に踏み切れる（農畜産業振興機構）。飯能市の給食ルートを握れれば、ちきゅうっ子野菜の安定販路になる。加藤さんの構想（ふるさと納税・給食）と一致。</p></div>
+      <div class="c verify"><span class="ic">注意</span><p>有機給食には「ロットを安定供給できるか」という壁がある（欠品すると大口を失う）。少量多品目の自然栽培とは相性に課題。最初は小さい売り先（飲食店・直売・野菜BOX定期便）から始めるのが定石とされる。</p></div>
+      <div class="c confirm"><span class="ic">手法</span><p>6次産業化（生産→加工→販売を農家が一貫）の認定は全国で約2,600件。中間マージンを省き価格を自分で決められるのが利点。奥武蔵ブランドが「加工・直売・EC」をまとめて担えば、各農家が個別にやるより効率的。</p></div>
+      <div class="c verify"><span class="ic">要確認</span><p>動画の納期・内容（尺・本数・用途）は先方とのすり合わせが必要。</p></div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var PATTERNS=['A','B','C'];
+  var FIELDS=[
+    {key:'price',label:'カスタム制作 単価(円/件)',def:80000,step:5000},
+    {key:'farms',label:'登録農家の数',def:5,step:1},
+    {key:'custom',label:'カスタム制作 件数/月',def:1,step:1},
+    {key:'sales',label:'1農家の月間EC売上(円)',def:0,step:10000},
+    {key:'rate',label:'成果報酬の率(%)',def:0,step:1}
+  ];
+  var subs={A:'',B:'',C:''};
+  var cols=document.getElementById('sim-cols');
+  var winner=document.getElementById('sim-winner');
+
+  function yen(n){return '¥'+Math.round(n).toLocaleString('ja-JP');}
+
+  PATTERNS.forEach(function(p){
+    var col=document.createElement('div');
+    col.className='col'; col.id='col-'+p;
+    var html='<div class="pat">'+p+'案</div><div class="patsub" id="sub-'+p+'"></div>';
+    FIELDS.forEach(function(fl){
+      html+='<div class="field"><label>'+fl.label+'</label>'
+        +'<input type="number" id="'+p+'-'+fl.key+'" value="'+fl.def+'" step="'+fl.step+'" min="0"></div>';
+    });
+    html+='<div class="res">'
+      +'<div class="rline"><span class="rl">制作</span><span class="rv" id="'+p+'-rc">¥0</span></div>'
+      +'<div class="rline"><span class="rl">成果報酬</span><span class="rv" id="'+p+'-rp">¥0</span></div>'
+      +'<div class="rline month"><span class="rl">月間</span><span class="rv" id="'+p+'-rm">¥0</span></div>'
+      +'<div class="rline year"><span class="rl">年間</span><span class="rv" id="'+p+'-ry">¥0</span></div>'
+      +'</div>';
+    col.innerHTML=html;
+    cols.appendChild(col);
+  });
+
+  function val(p,k){var el=document.getElementById(p+'-'+k);var v=parseFloat(el.value);return isNaN(v)?0:Math.max(0,v);}
+
+  function calc(){
+    var results={};
+    PATTERNS.forEach(function(p){
+      var price=val(p,'price'),farms=val(p,'farms'),custom=Math.min(val(p,'custom'),farms),
+          sales=val(p,'sales'),rate=val(p,'rate');
+      var rc=custom*price, rp=Math.round(farms*sales*rate/100), rm=rc+rp;
+      document.getElementById(p+'-rc').textContent=yen(rc);
+      document.getElementById(p+'-rp').textContent=yen(rp);
+      document.getElementById(p+'-rm').textContent=yen(rm);
+      document.getElementById(p+'-ry').textContent=yen(rm*12)+'/年';
+      document.getElementById('sub-'+p).textContent=subs[p];
+      results[p]={month:rm,perf:rp,custom:rc};
+    });
+    var best=PATTERNS.reduce(function(a,b){return results[b].month>results[a].month?b:a;});
+    PATTERNS.forEach(function(p){document.getElementById('col-'+p).classList.toggle('best',p===best&&results[best].month>0);});
+
+    var bm=results[best].month;
+    var msg='';
+    if(bm===0){msg='3案とも収入ゼロです。無料掲載だけでは1円も入りません。制作単価×件数か、成果報酬のどちらかを入れてください。';}
+    else{
+      msg=best+'案が月'+yen(bm)+'で最大。';
+      if(results[best].perf>results[best].custom&&results[best].perf>0){
+        msg+='ただしこの案は成果報酬が柱で、農家が実際に売れること（＝集客が機能すること）が前提。立ち上げ期は不確実です。';
+      }else if(results[best].custom>0){
+        msg+='収入の柱はカスタム制作。立ち上げ期はこれが現実的で、自分の手で確定できる収入です。';
+      }
+    }
+    winner.textContent=msg;
+  }
+
+  document.getElementById('sim-ai').addEventListener('click',function(){
+    var preset={
+      A:{price:50000,farms:10,custom:2,sales:0,rate:0},
+      B:{price:80000,farms:8,custom:2,sales:30000,rate:10},
+      C:{price:120000,farms:5,custom:1,sales:80000,rate:15}
+    };
+    subs={A:'堅実・制作のみ',B:'標準・制作＋成果',C:'攻め・高単価＋販路'};
+    PATTERNS.forEach(function(p){
+      Object.keys(preset[p]).forEach(function(k){document.getElementById(p+'-'+k).value=preset[p][k];});
+    });
+    calc();
+  });
+
+  PATTERNS.forEach(function(p){
+    FIELDS.forEach(function(fl){
+      document.getElementById(p+'-'+fl.key).addEventListener('input',function(){subs[p]='';calc();});
+    });
+  });
+  calc();
+})();
+</script>
+
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function num(id){var v=parseFloat($(id).value);return isNaN(v)?0:Math.max(0,v);}
+  function yen(n){return '¥'+Math.round(n).toLocaleString('ja-JP');}
+  function pct(a,b){return b>0?Math.min(Math.round(a/b*100),999):0;}
+
+  function calc(){
+    var m=num('k1-members'),fee=num('k1-fee'),g1=num('k1-goal');
+    var rev1=m*fee;
+    $('k1-rev').textContent=yen(rev1);
+    $('k1-annual').textContent=yen(rev1*12);
+    var p1=pct(m,g1);
+    $('k1-pct').textContent=p1+'%';
+    $('k1-bar').style.width=Math.min(p1,100)+'%';
+
+    var sold=num('k2-sold'),pr=num('k2-price'),cost=num('k2-cost'),g2=num('k2-goal');
+    var sales2=sold*pr, profit2=sold*(pr-cost);
+    $('k2-sales').textContent=yen(sales2);
+    $('k2-profit').textContent=yen(profit2);
+    var p2=pct(sold,g2);
+    $('k2-pct').textContent=p2+'%';
+    $('k2-bar').style.width=Math.min(p2,100)+'%';
+
+    var farms=num('k3-farms'),cust=num('k3-custom'),cpr=num('k3-price'),g3=num('k3-goal');
+    var rev3=cust*cpr;
+    $('k3-rev').textContent=yen(rev3);
+    $('k3-annual').textContent=yen(rev3*12);
+    var p3=pct(farms,g3);
+    $('k3-pct').textContent=p3+'%';
+    $('k3-bar').style.width=Math.min(p3,100)+'%';
+
+    var monthTotal=rev1+profit2+rev3;
+    $('kt-month').textContent=yen(monthTotal);
+    $('kt-year').textContent=yen(monthTotal*12);
+    var avg=Math.round((Math.min(p1,100)+Math.min(p2,100)+Math.min(p3,100))/3);
+    $('kt-pct').innerHTML=avg+'<small>%</small>';
+
+    var rows=[
+      {n:'ちきゅうっ子',v:rev1,c:'#5c7148'},
+      {n:'もくねん(粗利)',v:profit2,c:'#bf6b3f'},
+      {n:'ポータル制作',v:rev3,c:'#c9a14a'}
+    ];
+    var max=Math.max(rev1,profit2,rev3,1);
+    $('kt-chart').innerHTML=rows.map(function(row){
+      var w=Math.round(row.v/max*100);
+      return '<div class="chrow"><span class="cn">'+row.n+'</span>'
+        +'<div class="ctrack"><div class="cfill" style="width:'+w+'%;background:'+row.c+'"><span>'+yen(row.v)+'</span></div></div></div>';
+    }).join('');
+  }
+
+  var ids=['k1-members','k1-fee','k1-goal','k2-sold','k2-price','k2-cost','k2-goal','k3-farms','k3-custom','k3-price','k3-goal'];
+  ids.forEach(function(id){$(id).addEventListener('input',calc);});
+
+  var aibtn=$('kpi-ai');
+  if(aibtn){
+    aibtn.addEventListener('click',function(){
+      // 議論とリサーチに基づく現実的なおすすめ値
+      var preset={
+        'k1-members':10,'k1-fee':2500,'k1-goal':20,
+        'k2-sold':30,'k2-price':6600,'k2-cost':4000,'k2-goal':100,
+        'k3-farms':5,'k3-custom':2,'k3-price':80000,'k3-goal':10
+      };
+      Object.keys(preset).forEach(function(k){$(k).value=preset[k];});
+      calc();
+    });
+  }
+
+  calc();
+})();
+</script>
+
+<footer>
+  ちきゅうっ子ファーム ／ 奥武蔵ブランド　│　2026.06.09
+</footer>
+
+</body>
+</html>
