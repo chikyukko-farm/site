@@ -188,7 +188,34 @@
   .check .c.confirm .ic{background:#e7eede;color:var(--leaf-deep);border:1px solid var(--leaf)}
   .check .c p{font-size:14px;color:var(--soil-soft)}
 
+  /* ---- section point (結論ひとこと) ---- */
+  .point{background:var(--paper);border-left:5px solid var(--leaf);border-radius:0 8px 8px 0;padding:16px 22px;margin-bottom:22px;display:flex;align-items:center;gap:14px}
+  section:nth-of-type(even) .point{background:#fbf7ee}
+  .point .pi{font-family:'Zen Old Mincho',serif;font-size:11px;color:var(--clay);letter-spacing:.2em;white-space:nowrap;border-right:1px solid var(--line);padding-right:14px}
+  .point .pt{font-family:'Zen Old Mincho',serif;font-size:18px;font-weight:700;color:var(--soil);line-height:1.5}
+  @media(max-width:600px){.point{flex-direction:column;align-items:flex-start;gap:8px}.point .pi{border-right:none;padding-right:0}}
+
+  /* ---- details (詳細を畳む) ---- */
+  details.more{margin-top:6px}
+  details.more summary{cursor:pointer;font-size:13px;color:var(--muted);font-family:'Zen Old Mincho',serif;letter-spacing:.05em;padding:6px 0;list-style:none;display:flex;align-items:center;gap:8px}
+  details.more summary::-webkit-details-marker{display:none}
+  details.more summary::before{content:"＋";color:var(--clay);font-weight:700}
+  details.more[open] summary::before{content:"−"}
+  details.more summary:hover{color:var(--soil)}
+  details.more .inner{padding-top:10px}
+
   footer{background:var(--soil);color:var(--paper-deep);text-align:center;padding:30px;font-size:12.5px;letter-spacing:.1em;font-family:'Zen Old Mincho',serif}
+
+  /* ---- site nav (hub) ---- */
+  .sitenav{background:var(--soil);padding:22px 0 26px;border-bottom:1px solid rgba(246,241,231,.12)}
+  .sitenav .nlabel{text-align:center;font-family:'Zen Old Mincho',serif;color:var(--gold);font-size:11px;letter-spacing:.3em;margin-bottom:16px}
+  .sitenav .ngrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+  .sitenav a.ncard{display:block;text-decoration:none;background:linear-gradient(160deg,var(--leaf-deep),var(--soil-soft));border:1px solid rgba(246,241,231,.15);border-radius:9px;padding:16px 18px;transition:transform .1s,border-color .15s}
+  .sitenav a.ncard:hover{transform:translateY(-2px);border-color:var(--gold)}
+  .sitenav a.ncard.current{background:linear-gradient(160deg,var(--clay),#8a4f2d);border-color:var(--gold)}
+  .sitenav a.ncard .nt{font-family:'Zen Old Mincho',serif;font-size:15px;font-weight:700;color:var(--paper);margin-bottom:3px}
+  .sitenav a.ncard .nd{font-size:11.5px;color:var(--paper-deep);line-height:1.5}
+  .sitenav a.ncard .nbadge{display:inline-block;font-size:9.5px;font-weight:700;color:var(--gold);border:1px solid var(--gold);border-radius:20px;padding:1px 8px;margin-top:8px;letter-spacing:.05em}
 
   /* ---- simulator 3-pattern ---- */
   .sim{margin-top:8px}
@@ -284,10 +311,20 @@
   </div>
 </header>
 
+<nav class="sitenav">
+  <div class="nlabel">ち き ゅ う っ 子 ／ 奥 武 蔵 ・ 資 料 一 覧</div>
+  <div class="ngrid">
+      <a class="ncard current" href="./"><div class="nt">この資料（全体整理）</div><div class="nd">2つの箱・KPI・収益シミュレーター・リサーチ</div><span class="nbadge">いま表示中</span></a>
+      <a class="ncard" href="../farmer/"><div class="nt">農家向けプレゼン</div><div class="nd">近隣の生産者を誘うための営業資料</div><span class="nbadge">営業用</span></a>
+      <a class="ncard" href="../yoyaku-demo/"><div class="nt">予約デモ</div><div class="nd">「今日の畑、何人集まる？」の見本</div><span class="nbadge">先方共有用</span></a>
+  </div>
+</nav>
+
 <!-- 1 -->
 <section>
   <div class="wrap">
     <div class="label"><span class="no">01</span><h2>全体像 ── 2つの仕事を分けて考える</h2></div>
+    <div class="point"><span class="pi">要点</span><span class="pt">やることは2つ。「人を集める畑」と「モノを売る奥武蔵ブランド」に分けて進めます。</span></div>
     <p class="lead">これまで広がった話を、性質の違う2つの箱に整理しました。ひとつは「人を集めて畑をやる」活動、もうひとつは「モノを売る・地域でまとめる」活動です。</p>
     <div class="grid g2">
       <div class="card">
@@ -317,6 +354,7 @@
 <section>
   <div class="wrap">
     <div class="label"><span class="no">02</span><h2>【人の箱】最優先課題 ── 125名が動いていない</h2></div>
+    <div class="point"><span class="pi">要点</span><span class="pt">LINEに125名いるのに参加ゼロ。原因は文面でなく「参加の道順」が無いこと。まずそこを作ります。</span></div>
     <p class="lead">公式LINEには登録があるのに、参加につながっていない。原因はメッセージの良し悪しの前に、情報設計にあります。</p>
     <div class="focus">
       <div class="k">最 優 先 で 解 く</div>
@@ -330,6 +368,7 @@
 <section>
   <div class="wrap">
     <div class="label"><span class="no">03</span><h2>【奥武蔵ブランド】もくねん工房 ── 第1商店</h2></div>
+    <div class="point"><span class="pi">要点</span><span class="pt">ペレ炭1本に絞り、価格は落とさずブランディングで売る。これが奥武蔵ブランドの第1号になります。</span></div>
     <p class="lead">奥武蔵ブランドの最初の1社。まず1つを「売れる商品」として完成させ、それをポータルの見本にします。ペレ炭を軸に、同じ作り方で展開できる商材へ広げる。2026年3月末までに100セット完売が目標。</p>
     <div class="grid g2">
       <div class="card">
@@ -341,6 +380,13 @@
         <p>同じ製造の強みで作れる商材を洗い出し、ラインナップとして提案。代理店として扱う商品の幅を広げる。</p>
       </div>
     </div>
+
+    <div class="focus" style="background:linear-gradient(135deg,#7a5230,#bf6b3f);margin-top:22px">
+      <div class="k">売 り 方 の 方 針</div>
+      <h3>価格は落とさず、ブランディングで売る</h3>
+      <p>ペレ炭は、特許・国産・廃材アップサイクル、そして「片付けが楽」という、高くても選ばれる理由がある商品です。安売りで数を追うのではなく、価値を伝えて選んでもらう方向で進めます。具体的な価格や売り方の設計は、別途詰めます。</p>
+    </div>
+
     <div class="check" style="margin-top:18px">
       <div class="c verify"><span class="ic">未確定</span><p>もくねん工房が何を原料に何を作れるか（製造の強み・量産可否）。横展開を考える前提情報。</p></div>
     </div>
@@ -351,6 +397,7 @@
 <section>
   <div class="wrap">
     <div class="label"><span class="no">04</span><h2>【奥武蔵ブランド】ポータル ── 収益の考え方</h2></div>
+    <div class="point"><span class="pi">要点</span><span class="pt">農家は無料で集め、稼ぎはページの作り込み。成果報酬は決済を持てるようになってから。</span></div>
     <p class="lead">課金のかけ方を3パターン（A・B・C）並べて比較できます。各項目の料金や数値は自由に書き換えられます。まず「AIおまかせ」で3案を自動入力し、そこから調整するのがおすすめです。</p>
 
     <div class="grid g2" style="margin-bottom:20px">
@@ -388,6 +435,7 @@
 <section>
   <div class="wrap">
     <div class="label"><span class="no">05</span><h2>【奥武蔵ブランド】見せ方の前提 ── 「新鮮」では埋もれる</h2></div>
+    <div class="point"><span class="pi">要点</span><span class="pt">「新鮮・こだわり」は全員が言うので埋もれます。人か、特別な一品で見せます。</span></div>
     <p class="lead">近隣マルシェのチラシを見ると、参加農家がそろって「新鮮・旬・こだわり・体にやさしい」で説明され、写真もどれも似たカゴ盛り。結果、お客様の記憶には「埼玉の野菜がいっぱいあった」しか残りません。</p>
     <div class="focus" style="background:linear-gradient(135deg,#7a5230,#bf6b3f)">
       <div class="k">差 別 化 の 原 則</div>
@@ -411,12 +459,13 @@
 <section>
   <div class="wrap">
     <div class="label"><span class="no">06</span><h2>【人の箱】共同家庭菜園の再設計 ── 加藤さん提案への回答</h2></div>
+    <div class="point"><span class="pi">要点</span><span class="pt">無料化・自律分散の方向に賛成。ひとつだけ、観光で稼げるまでの「つなぎの収入」を一緒に決めたいです。</span></div>
     <p class="lead">「お客様ビジネスをやめ、参加者みんなで運営する自律分散型へ。価格は下げ、できれば無料に。マネタイズは観光と認証で」という提案。方向性に賛同したうえで、詰めておきたい論点を1つ挙げます。</p>
 
     <div class="grid g2" style="margin-bottom:18px">
       <div class="card" style="border-left:4px solid var(--leaf)">
         <h3><span class="tag">賛同</span>無料化・自律分散へ</h3>
-        <p>費用を取ってお客様として迎えると、参加者は受け身に固定され、運営の手間が増える。土地を貸すシニアも月2,500円では動かない。動機は金額でなく「つながり・居場所・社会貢献」。課金をやめる判断は構造的に正しい。</p>
+        <p>費用を取ってお客様として迎えると、参加者は受け身になりやすく、運営の手間も増える。土地を貸すシニアも月2,500円では動きにくい。動機は金額でなく「つながり・居場所・社会貢献」。課金をやめる方向に、賛成です。</p>
       </div>
       <div class="card" style="border-left:4px solid var(--leaf)">
         <h3><span class="tag">賛同</span>認証制度をつくる</h3>
@@ -441,6 +490,7 @@
 <section>
   <div class="wrap">
     <div class="label"><span class="no">07</span><h2>これから進める項目</h2></div>
+    <div class="point"><span class="pi">次の一歩</span><span class="pt">優先度の目安です。まず125名の参加導線とLINEから動かします。</span></div>
     <p class="lead">ここまでの整理を踏まえ、動かしていく項目を並べます。順番と優先度の目安です。</p>
     <div class="agenda">
       <div class="item"><div class="n">壱</div><div><h3>本体の足元タスク</h3><p>LINE・申込シート・HP。最優先は125名の参加導線づくり。</p></div></div>
@@ -455,6 +505,7 @@
 <section>
   <div class="wrap">
     <div class="label"><span class="no">08</span><h2>数字で見る ── KPIダッシュボード</h2></div>
+    <div class="point"><span class="pi">使い方</span><span class="pt">数字を入れると売上と達成率が動きます。打ち合わせで実数を入れてみてください。</span></div>
     <p class="lead">各事業の数字を入れると、売上・目標達成率・収穫祭までの全体像がその場で見えます。空欄は仮の数字でかまいません。打ち合わせで実数を入れて動かしてください。</p>
 
     <div class="kpi">
@@ -551,6 +602,7 @@
 <section>
   <div class="wrap">
     <div class="label"><span class="no">09</span><h2>リサーチで分かったこと</h2></div>
+    <div class="point"><span class="pi">調べた結果</span><span class="pt">未確定だった点を調べました。事実が取れたものと、先方に直接聞くべきものを分けています。</span></div>
     <p class="lead">前回まで未確定だった点を調べました。事実が取れたものと、なお先方に直接聞くべきものを分けています。</p>
     <div class="check">
       <div class="c confirm"><span class="ic">判明</span><p>もくねん工房＝株式会社もくねん。特許第5859777号「ペレット状炭の燃焼方法と開発装置」を保有。原料は製材で廃棄される杉・ヒノキの樹皮。製造は「ペレット成型→炭化」の工程。一般のペレット製造では樹皮以外に木くず・端材・他のバイオマスも原料化できるため、横展開の技術的な余地はある。ただし量産能力（月産量）は先方に要確認。</p></div>
