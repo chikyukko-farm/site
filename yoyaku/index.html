@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ちきゅうっ子ファーム ── 今日の畑、何人集まる？</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root{
+    --soil:#2f2a24; --soil-soft:#4a4138; --paper:#f6f1e7; --paper-deep:#ece4d4;
+    --leaf:#5c7148; --leaf-deep:#3f5232; --clay:#bf6b3f; --gold:#c9a14a;
+    --line:#d6cbb5; --muted:#8a7f6c;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Zen Kaku Gothic New',sans-serif;background:var(--paper);color:var(--soil);line-height:1.8;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:840px;margin:0 auto;padding:0 22px}
+  .hero{background:radial-gradient(circle at 85% -10%,rgba(201,161,74,.2),transparent 45%),linear-gradient(160deg,var(--leaf-deep),var(--soil) 130%);color:var(--paper);padding:46px 0 38px}
+  .hero .eyebrow{font-family:'Zen Old Mincho',serif;letter-spacing:.4em;font-size:11px;color:var(--gold);margin-bottom:14px;padding-left:.4em}
+  .hero h1{font-family:'Zen Old Mincho',serif;font-weight:900;font-size:30px;line-height:1.4}
+  .hero .lead{font-size:13.5px;color:var(--paper-deep);margin-top:14px;max-width:560px}
+
+  .setup{background:#fff4e0;border:1px solid var(--clay);border-radius:10px;padding:18px 20px;margin:20px 0}
+  .setup h3{font-family:'Zen Old Mincho',serif;font-size:15px;color:var(--clay);margin-bottom:8px}
+  .setup p{font-size:12.5px;color:var(--soil-soft);margin-bottom:12px}
+  .setup .frow{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+  .setup input{flex:1;min-width:200px;border:1px solid var(--line);border-radius:7px;padding:9px 12px;font-size:13px;font-family:monospace;background:#fff;color:var(--soil)}
+  .setup button{background:var(--clay);color:#fff;border:none;border-radius:7px;padding:9px 18px;font-size:13px;font-weight:700;cursor:pointer}
+
+  .today{background:var(--paper-deep);border-bottom:1px solid var(--line);padding:26px 0}
+  .today .row{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+  .today .big{display:flex;align-items:baseline;gap:6px}
+  .today .big .num{font-family:'Zen Old Mincho',serif;font-size:62px;font-weight:900;color:var(--leaf-deep);line-height:.9}
+  .today .big .unit{font-family:'Zen Old Mincho',serif;font-size:18px;color:var(--soil-soft)}
+  .today .meta .lbl{font-family:'Zen Old Mincho',serif;font-size:12px;color:var(--clay);letter-spacing:.15em;margin-bottom:3px}
+  .today .meta .dt{font-size:15px;font-weight:700}
+  .today .meta .sub,.today .meta .none{font-size:12.5px;color:var(--muted)}
+
+  section{padding:34px 0}
+  .stitle{font-family:'Zen Old Mincho',serif;font-size:18px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:10px}
+  .stitle .mk{width:6px;height:18px;background:var(--leaf);border-radius:2px}
+  .sdesc{font-size:12.5px;color:var(--muted);margin-bottom:20px}
+
+  .namebar{background:var(--paper-deep);border-radius:10px;padding:16px 18px;margin-bottom:24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .namebar label{font-size:12.5px;color:var(--soil-soft);font-weight:700;white-space:nowrap}
+  .namebar input{flex:1;min-width:140px;border:1px solid var(--line);border-radius:7px;padding:9px 12px;font-size:14px;font-family:'Zen Kaku Gothic New';background:var(--paper);color:var(--soil)}
+  .namebar .hint{font-size:11px;color:var(--muted);width:100%}
+
+  .acts{display:flex;flex-direction:column;gap:14px}
+  .act{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+  .act.mine{border-color:var(--leaf);box-shadow:0 3px 14px rgba(63,82,50,.1)}
+  .act .ah{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap}
+  .act .ai .kind{display:inline-block;font-size:10.5px;font-weight:700;color:#fff;padding:2px 9px;border-radius:20px;margin-bottom:7px}
+  .act .ai .kind.k-farm{background:var(--leaf)}
+  .act .ai .kind.k-school{background:var(--clay)}
+  .act .ai .date{font-family:'Zen Old Mincho',serif;font-size:19px;font-weight:700}
+  .act .ai .place{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .act .cnt{text-align:right;white-space:nowrap}
+  .act .cnt .c{font-family:'Zen Old Mincho',serif;font-size:30px;font-weight:900;color:var(--leaf-deep);line-height:1}
+  .act .cnt .cl{font-size:11px;color:var(--muted)}
+  .act .members{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);display:flex;flex-wrap:wrap;gap:7px;min-height:8px}
+  .act .chip{font-size:12px;background:var(--paper-deep);border-radius:20px;padding:4px 12px;color:var(--soil-soft)}
+  .act .chip.me{background:var(--leaf);color:#fff}
+  .act .empty{font-size:12px;color:var(--muted)}
+  .act .actions{margin-top:14px;display:flex;gap:9px;flex-wrap:wrap}
+  .btn{font-family:'Zen Kaku Gothic New';font-size:13px;font-weight:700;border:none;border-radius:7px;padding:9px 18px;cursor:pointer}
+  .btn-go{background:var(--leaf-deep);color:#fff}
+  .btn-cancel{background:var(--paper-deep);color:var(--soil-soft)}
+
+  .admin{background:var(--soil);color:var(--paper-deep);border-radius:12px;padding:22px 24px}
+  .admin .at{font-family:'Zen Old Mincho',serif;color:var(--gold);font-size:13px;letter-spacing:.2em;margin-bottom:16px}
+  .admin .arow{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid rgba(246,241,231,.12);font-size:13.5px}
+  .admin .arow:last-child{border-bottom:none}
+  .admin .arow .ad{color:var(--paper)}
+  .admin .arow .av{font-family:'Zen Old Mincho',serif;font-size:18px;font-weight:700;color:var(--gold)}
+
+  .status{font-size:12px;color:var(--muted);text-align:center;padding:8px}
+  footer{text-align:center;padding:26px;font-size:11.5px;letter-spacing:.1em;color:var(--muted);font-family:'Zen Old Mincho',serif}
+  @media(max-width:600px){.hero h1{font-size:24px}.today .big .num{font-size:48px}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">ち き ゅ う っ 子 フ ァ ー ム</div>
+    <h1>今日の畑、何人集まる？</h1>
+    <p class="lead">活動日を選んで「行く」を押すだけ。みんなの予約がリアルタイムで集まり、運営も参加者も人数が見えます。</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- Supabase接続設定（初回だけ。設定後は隠れる） -->
+  <div class="setup" id="setup">
+    <h3>はじめに：データベースに接続</h3>
+    <p>Supabaseの「Project URL」と「anon public key」を入れてください（Supabaseダッシュボード → Settings → API）。一度入れればこの端末に記憶されます。運営者だけが設定すればOKです。</p>
+    <div class="frow"><input type="text" id="sb-url" placeholder="https://xxxx.supabase.co"></div>
+    <div class="frow"><input type="text" id="sb-key" placeholder="anon public key (eyJ...)"></div>
+    <button id="sb-connect">接続する</button>
+  </div>
+
+  <div id="app" style="display:none">
+    <div class="today"><div class="wrap" style="padding:0"><div class="row" id="today-box"></div></div></div>
+
+    <section>
+      <div class="namebar">
+        <label>あなたの名前</label>
+        <input type="text" id="myname" placeholder="例：かとう / にしかわ / もり" maxlength="20">
+        <div class="hint">名前を入れてから「行く」を押してください。</div>
+      </div>
+      <div class="stitle"><span class="mk"></span>活動日をえらぶ</div>
+      <div class="sdesc">日曜は共同家庭菜園、土曜はしぜん農村塾。行ける日に「行く」を押してください。</div>
+      <div class="acts" id="acts"></div>
+      <div class="status" id="status"></div>
+    </section>
+
+    <section>
+      <div class="stitle"><span class="mk" style="background:var(--clay)"></span>運営ビュー（みんなの集計）</div>
+      <div class="sdesc">全員の予約を合計した、各日の参加人数です。</div>
+      <div class="admin">
+        <div class="at">参 加 人 数 の 集 計</div>
+        <div id="admin-rows"></div>
+      </div>
+    </section>
+  </div>
+
+</div>
+
+<footer>ちきゅうっ子ファーム ／ 奥武蔵</footer>
+
+<script>
+(function(){
+  var URL_KEY='sb_url_v1', KEY_KEY='sb_key_v1', NAME_KEY='chikyukko_name_v1';
+  var sb=null, activities=[], reservations=[];
+
+  function $(id){return document.getElementById(id);}
+  function getName(){ try{return localStorage.getItem(NAME_KEY)||'';}catch(e){return '';} }
+  function setNameLS(n){ try{localStorage.setItem(NAME_KEY,n);}catch(e){} }
+  function escapeHtml(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+
+  // ---- 接続 ----
+  function tryConnect(url,key){
+    if(!url||!key) return false;
+    try{
+      sb = supabase.createClient(url,key);
+      try{ localStorage.setItem(URL_KEY,url); localStorage.setItem(KEY_KEY,key); }catch(e){}
+      $('setup').style.display='none';
+      $('app').style.display='block';
+      loadAll();
+      return true;
+    }catch(e){ alert('接続に失敗しました：'+e.message); return false; }
+  }
+
+  $('sb-connect').addEventListener('click',function(){
+    tryConnect($('sb-url').value.trim(), $('sb-key').value.trim());
+  });
+
+  // 記憶された接続情報があれば自動接続
+  try{
+    var su=localStorage.getItem(URL_KEY), sk=localStorage.getItem(KEY_KEY);
+    if(su&&sk) tryConnect(su,sk);
+  }catch(e){}
+
+  // ---- データ読み込み ----
+  async function loadAll(){
+    $('myname').value = getName();
+    $('myname').addEventListener('input',function(){ setNameLS($('myname').value.trim()); render(); });
+    setStatus('読み込み中…');
+    try{
+      var a = await sb.from('activities').select('*').order('starts_at',{ascending:true});
+      var r = await sb.from('reservations').select('*').eq('status','going');
+      if(a.error) throw a.error;
+      if(r.error) throw r.error;
+      activities = a.data||[];
+      reservations = r.data||[];
+      setStatus('');
+      render();
+    }catch(e){ setStatus('読み込みエラー：'+e.message); }
+  }
+
+  function setStatus(t){ $('status').textContent=t; }
+  function myName(){ return $('myname').value.trim(); }
+  function resOf(actId){ return reservations.filter(function(x){return x.activity_id===actId;}); }
+  function nameList(actId){ return resOf(actId).map(function(x){return x.guest_name||'';}); }
+
+  // ---- 予約トグル ----
+  async function toggle(actId){
+    var name=myName();
+    if(!name){ var n=$('myname'); n.focus(); n.style.borderColor='var(--clay)'; setTimeout(function(){n.style.borderColor='';},900); return; }
+    var existing = resOf(actId).find(function(x){return x.guest_name===name;});
+    setStatus('更新中…');
+    try{
+      if(existing){
+        var d = await sb.from('reservations').delete().eq('id',existing.id);
+        if(d.error) throw d.error;
+      }else{
+        // 参加者を作る or 既存を探す（簡易版：guest_nameを予約に直接持たせる）
+        var ins = await sb.from('reservations').insert({activity_id:actId, guest_name:name, status:'going'});
+        if(ins.error) throw ins.error;
+      }
+      await loadAll();
+    }catch(e){ setStatus('更新エラー：'+e.message); }
+  }
+
+  // ---- 描画 ----
+  function render(){
+    var name=myName();
+    if(activities.length===0){ $('today-box').innerHTML='<div class="meta"><div class="none">活動データがありません。</div></div>'; return; }
+
+    var t=activities[0], tc=nameList(t.id).length;
+    var kindLabel=function(k){return k==='farm'?'共同家庭菜園':(k==='school'?'しぜん農村塾':'活動');};
+    var fmt=function(iso){ var d=new Date(iso); return (d.getMonth()+1)+'月'+d.getDate()+'日'; };
+
+    $('today-box').innerHTML = tc>0
+      ? '<div class="big"><span class="num">'+tc+'</span><span class="unit">人</span></div><div class="meta"><div class="lbl">いちばん近い活動日</div><div class="dt">'+fmt(t.starts_at)+'</div><div class="sub">'+kindLabel(t.kind)+'　いま参加予定</div></div>'
+      : '<div class="big"><span class="num">0</span><span class="unit">人</span></div><div class="meta"><div class="lbl">いちばん近い活動日</div><div class="dt">'+fmt(t.starts_at)+'</div><div class="none">まだ誰も「行く」を押していません。</div></div>';
+
+    $('acts').innerHTML = activities.map(function(a){
+      var list=nameList(a.id), joined=name&&list.indexOf(name)>=0;
+      var kc=a.kind==='farm'?'k-farm':'k-school';
+      var chips=list.length?list.map(function(p){return '<span class="chip'+(p===name?' me':'')+'">'+escapeHtml(p)+'</span>';}).join(''):'<span class="empty">まだ参加者はいません</span>';
+      return '<div class="act'+(joined?' mine':'')+'"><div class="ah"><div class="ai"><span class="kind '+kc+'">'+kindLabel(a.kind)+'</span><div class="date">'+fmt(a.starts_at)+'</div><div class="place">'+escapeHtml(a.place||'')+'</div></div><div class="cnt"><div class="c">'+list.length+'</div><div class="cl">人が参加予定</div></div></div><div class="members">'+chips+'</div><div class="actions">'+(joined?'<button class="btn btn-cancel" data-act="'+a.id+'">やっぱり行けない</button>':'<button class="btn btn-go" data-act="'+a.id+'">この日に行く</button>')+'</div></div>';
+    }).join('');
+
+    $('acts').querySelectorAll('button[data-act]').forEach(function(b){
+      b.addEventListener('click',function(){ toggle(b.getAttribute('data-act')); });
+    });
+
+    $('admin-rows').innerHTML = activities.map(function(a){
+      return '<div class="arow"><span class="ad">'+fmt(a.starts_at)+'　<span style="opacity:.6;font-size:12px">'+kindLabel(a.kind)+'</span></span><span class="av">'+nameList(a.id).length+' 人</span></div>';
+    }).join('');
+  }
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>奥武蔵ポータル ── 地元の野菜を、地元の食卓へ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --soil:#2f2a24; --soil-soft:#4a4138; --paper:#f6f1e7; --paper-deep:#ece4d4;
+    --leaf:#5c7148; --leaf-deep:#3f5232; --clay:#bf6b3f; --gold:#c9a14a;
+    --line:#d6cbb5; --muted:#8a7f6c;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Zen Kaku Gothic New',sans-serif;background:var(--paper);color:var(--soil);line-height:1.95;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:0 26px}
+
+  /* hero */
+  .hero{background:radial-gradient(circle at 80% -10%,rgba(201,161,74,.2),transparent 45%),linear-gradient(160deg,var(--leaf-deep),var(--soil) 130%);color:var(--paper);padding:78px 0 64px;text-align:center}
+  .hero .eyebrow{font-family:'Zen Old Mincho',serif;letter-spacing:.5em;font-size:12px;color:var(--gold);margin-bottom:24px}
+  .hero h1{font-family:'Zen Old Mincho',serif;font-weight:900;font-size:40px;line-height:1.45;letter-spacing:.03em}
+  .hero h1 .accent{color:var(--gold)}
+  .hero .sub{font-size:16px;color:var(--paper-deep);margin-top:24px;letter-spacing:.05em}
+  .hero .who{margin-top:34px;font-size:13px;color:var(--gold);font-family:'Zen Old Mincho',serif;letter-spacing:.2em}
+
+  section{padding:60px 0}
+  section:nth-of-type(even){background:var(--paper-deep)}
+  .kicker{font-family:'Zen Old Mincho',serif;color:var(--clay);font-size:13px;letter-spacing:.2em;margin-bottom:14px;text-align:center}
+  h2.big{font-family:'Zen Old Mincho',serif;font-size:30px;font-weight:900;text-align:center;line-height:1.5;margin-bottom:14px}
+  .lead{font-size:16px;color:var(--soil-soft);text-align:center;max-width:660px;margin:0 auto 40px}
+
+  /* pain cards */
+  .pains{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+  .pain{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:24px;text-align:center}
+  section:nth-of-type(even) .pain{background:#fbf7ee}
+  .pain .ic{font-family:'Zen Old Mincho',serif;font-size:30px;color:var(--clay);margin-bottom:10px}
+  .pain h3{font-family:'Zen Old Mincho',serif;font-size:17px;margin-bottom:8px}
+  .pain p{font-size:13.5px;color:var(--soil-soft)}
+
+  /* proof / 食べチョク */
+  .proof{background:var(--soil);color:var(--paper);border-radius:14px;padding:40px 38px;text-align:center}
+  .proof .pk{font-family:'Zen Old Mincho',serif;color:var(--gold);font-size:13px;letter-spacing:.2em;margin-bottom:16px}
+  .proof h3{font-family:'Zen Old Mincho',serif;font-size:24px;font-weight:700;line-height:1.6;margin-bottom:20px}
+  .proof .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:28px}
+  .proof .st .v{font-family:'Zen Old Mincho',serif;font-size:30px;font-weight:900;color:var(--gold);line-height:1}
+  .proof .st .l{font-size:12px;color:var(--paper-deep);margin-top:6px}
+  .proof .note{font-size:12px;color:var(--muted);margin-top:24px}
+
+  /* turn / 転換 */
+  .turn{text-align:center}
+  .turn .vs{display:flex;align-items:stretch;gap:0;max-width:680px;margin:0 auto;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+  .turn .vc{flex:1;padding:28px 22px;background:var(--paper)}
+  .turn .vc.them{background:#efe9dd}
+  .turn .vc.us{background:linear-gradient(180deg,#eef2e6,#fbf7ee)}
+  .turn .vc .vt{font-family:'Zen Old Mincho',serif;font-size:16px;font-weight:700;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--line)}
+  .turn .vc.us .vt{color:var(--leaf-deep)}
+  .turn .vc ul{list-style:none;text-align:left}
+  .turn .vc li{font-size:13.5px;color:var(--soil-soft);padding:8px 0 8px 22px;position:relative}
+  .turn .vc li::before{content:"";position:absolute;left:2px;top:15px;width:6px;height:6px;border-radius:50%;background:var(--muted)}
+  .turn .vc.us li::before{background:var(--leaf)}
+  .turn .vmid{display:flex;align-items:center;justify-content:center;width:46px;background:var(--soil);color:var(--gold);font-family:'Zen Old Mincho',serif;font-weight:700;font-size:14px}
+
+  /* offer */
+  .offers{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+  .offer{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:26px;border-top:4px solid var(--leaf)}
+  section:nth-of-type(even) .offer{background:#fbf7ee}
+  .offer .on{font-family:'Zen Old Mincho',serif;font-size:14px;color:var(--clay);margin-bottom:6px}
+  .offer h3{font-family:'Zen Old Mincho',serif;font-size:19px;margin-bottom:10px}
+  .offer p{font-size:14px;color:var(--soil-soft)}
+
+  /* fee */
+  .fee{background:var(--paper);border:2px solid var(--leaf-deep);border-radius:12px;padding:30px;text-align:center;max-width:560px;margin:0 auto}
+  section:nth-of-type(even) .fee{background:#fbf7ee}
+  .fee .ft{font-family:'Zen Old Mincho',serif;font-size:18px;font-weight:700;margin-bottom:8px}
+  .fee .fbig{font-family:'Zen Old Mincho',serif;font-size:44px;font-weight:900;color:var(--leaf-deep);line-height:1.1}
+  .fee .fbig small{font-size:17px;color:var(--soil-soft);font-weight:500}
+  .fee .fsub{font-size:13.5px;color:var(--muted);margin-top:10px}
+  .fee .fnote{font-size:12.5px;color:var(--soil-soft);margin-top:18px;padding-top:16px;border-top:1px dashed var(--line)}
+
+  /* steps */
+  .steps{counter-reset:st;max-width:620px;margin:0 auto}
+  .step{display:flex;gap:20px;align-items:flex-start;padding:18px 0;border-top:1px solid var(--line)}
+  .step:first-child{border-top:none}
+  .step .sn{font-family:'Zen Old Mincho',serif;font-size:26px;font-weight:900;color:var(--clay);line-height:1;min-width:40px}
+  .step h3{font-family:'Zen Old Mincho',serif;font-size:17px;margin-bottom:4px}
+  .step p{font-size:13.5px;color:var(--soil-soft)}
+
+  /* closing */
+  .closing{background:linear-gradient(160deg,var(--leaf-deep),var(--soil));color:var(--paper);text-align:center;padding:64px 0}
+  .closing h2{font-family:'Zen Old Mincho',serif;font-size:28px;font-weight:900;line-height:1.6;margin-bottom:18px}
+  .closing p{font-size:15px;color:var(--paper-deep);max-width:560px;margin:0 auto}
+  .closing .date{margin-top:26px;font-family:'Zen Old Mincho',serif;color:var(--gold);font-size:15px;letter-spacing:.15em}
+
+  footer{background:var(--soil);color:var(--paper-deep);text-align:center;padding:28px;font-size:12px;letter-spacing:.1em;font-family:'Zen Old Mincho',serif}
+
+  @media(max-width:600px){
+    .hero h1{font-size:28px}
+    h2.big{font-size:23px}
+    .proof .stats{grid-template-columns:1fr;gap:14px}
+    .turn .vs{flex-direction:column}
+    .turn .vmid{width:auto;padding:8px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">奥 武 蔵 ポ ー タ ル</div>
+    <h1>地元の野菜を、<br><span class="accent">地元の食卓</span >へ。</h1>
+    <p class="sub">あなたの畑のものが、ちゃんと評価されて、ちゃんと売れる仕組みを。</p>
+    <div class="who">── 飯能・奥武蔵の生産者のみなさまへ ──</div>
+  </div>
+</header>
+
+<!-- 1 共感 -->
+<section>
+  <div class="wrap">
+    <div class="kicker">こ ん な こ と 、あ り ま せ ん か</div>
+    <h2 class="big">いい野菜を作っているのに、<br>売り先と手間に困っていませんか</h2>
+    <p class="lead">手間ひまかけて育てても、出口がなければ報われません。多くの生産者が、同じ悩みを抱えています。</p>
+    <div class="pains">
+      <div class="pain"><div class="ic">壱</div><h3>売り先が弱い</h3><p>JAや市場に出すと手数料が高く、価格も自分で決められない。直売所も置ける量に限りがある。</p></div>
+      <div class="pain"><div class="ic">弐</div><h3>ネット販売が難しい</h3><p>一人でECサイトを立ち上げる時間も知識もない。写真も文章も手が回らない。</p></div>
+      <div class="pain"><div class="ic">参</div><h3>埋もれてしまう</h3><p>「新鮮」「こだわり」だけでは、他の農家と同じに見えて、選ばれる理由が伝わらない。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 証拠 食べチョク -->
+<section>
+  <div class="wrap">
+    <div class="kicker">で も 、こ れ は 証 明 さ れ て い ま す</div>
+    <h2 class="big">「生産者から直接売る」は、<br>ちゃんと稼げる時代です</h2>
+    <p class="lead">全国では「食べチョク」というサービスが、農家の直販を成功させています。市場やスーパーを通さず、生産者が自分で価格を決めて売る ── その仕組みは、もう実証済みです。</p>
+    <div class="proof">
+      <div class="pk">事 例 ：食 べ チ ョ ク</div>
+      <h3>市場やJAを通さず、生産者から消費者へ“直接”。<br>顔が見えて、価格を自分で決められる直売所。</h3>
+      <div class="stats">
+        <div class="st"><div class="v">無料</div><div class="l">初期費用・月額費用</div></div>
+        <div class="st"><div class="v">自分で</div><div class="l">価格を設定できる</div></div>
+        <div class="st"><div class="v">No.1</div><div class="l">産直ECの認知度・利用率</div></div>
+      </div>
+      <p class="note">※ 食べチョクは登録無料・販売手数料型。生産者が価格を決め、人柄やこだわりで“ファン”がつく仕組みとして全国で成功しています。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3 転換 -->
+<section>
+  <div class="wrap">
+    <div class="kicker">そ こ で 、わ た し た ち の 出 番 で す</div>
+    <h2 class="big">食べチョクは全国向け。<br>わたしたちは「この地域」に徹します</h2>
+    <p class="lead">大きなサービスにはできない、地域だからこそできることがあります。</p>
+    <div class="turn">
+      <div class="vs">
+        <div class="vc them">
+          <div class="vt">全国向けの直販EC</div>
+          <ul>
+            <li>遠くの誰かに送る。送料がかかる</li>
+            <li>買って終わり。関わりは画面の中だけ</li>
+            <li>全国の農家と並ぶ。埋もれやすい</li>
+          </ul>
+        </div>
+        <div class="vmid">→</div>
+        <div class="vc us">
+          <div class="vt">奥武蔵ポータル（地域密着）</div>
+          <ul>
+            <li>地元の人へ。送料なしで直接受け渡しも</li>
+            <li>畑に会いに行ける。体験・収穫祭とつながる</li>
+            <li>「奥武蔵」の名で、地域ブランドとして売る</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 提供 -->
+<section>
+  <div class="wrap">
+    <div class="kicker">わ た し た ち が す る こ と</div>
+    <h2 class="big">あなたは、作ることに集中してください</h2>
+    <p class="lead">売るための面倒な部分は、こちらで引き受けます。一人で全部やらなくて大丈夫です。</p>
+    <div class="offers">
+      <div class="offer"><div class="on">その壱</div><h3>ページを作ります</h3><p>「一人でネット販売は難しい」方へ。写真・文章・商品ページを、こちらで作成。あなたは野菜を渡すだけ。</p></div>
+      <div class="offer"><div class="on">その弐</div><h3>物語で売ります</h3><p>「新鮮」では埋もれます。あなたの人柄・畑・育て方を物語にして、選ばれる理由を伝えます。</p></div>
+      <div class="offer"><div class="on">その参</div><h3>奥武蔵の名で束ねます</h3><p>地域の生産者をまとめ、「奥武蔵ブランド」として信用を高める。一軒では届かない販路を、みんなで開きます。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 費用 -->
+<section>
+  <div class="wrap">
+    <div class="kicker">費 用 に つ い て</div>
+    <h2 class="big">登録は無料。リスクなく始められます</h2>
+    <p class="lead">食べチョクと同じく、まず無料で。売れて初めて、わずかな手数料をいただく形を基本にします。</p>
+    <div class="fee">
+      <div class="ft">ポータル登録</div>
+      <div class="fbig">無料<small> ではじめる</small></div>
+      <div class="fsub">初期費用も月額もかかりません。まず載せてみる、で大丈夫です。</div>
+      <div class="fnote">プロ撮影・動画・特別な作り込みをご希望の場合のみ、別途ご相談。売上が立ってからの成果報酬型も、ご一緒に設計します。</div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 はじめかた -->
+<section>
+  <div class="wrap">
+    <div class="kicker">は じ め か た</div>
+    <h2 class="big">まずは一品から、気軽に</h2>
+    <p class="lead">いきなり全部でなくて構いません。小さく始めて、一緒に育てましょう。</p>
+    <div class="steps">
+      <div class="step"><div class="sn">壱</div><div><h3>お話を聞かせてください</h3><p>何を作っていて、どんなことに困っているか。まずはそこから。</p></div></div>
+      <div class="step"><div class="sn">弐</div><div><h3>一品、ページを作ります</h3><p>看板になる一品を選び、こちらでページと見せ方を用意します。</p></div></div>
+      <div class="step"><div class="sn">参</div><div><h3>奥武蔵ポータルに並びます</h3><p>地域の仲間と一緒に、奥武蔵ブランドの一員として売り出します。</p></div></div>
+      <div class="step"><div class="sn">肆</div><div><h3>収穫祭で、お披露目を</h3><p>11月23日の収穫祭を、最初の舞台に。地域の人に直接届けましょう。</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- closing -->
+<div class="closing">
+  <div class="wrap">
+    <h2>いい野菜が、ちゃんと報われる地域へ。</h2>
+    <p>一軒では難しくても、みんなで束ねれば、奥武蔵は強いブランドになります。あなたの畑のものを、地元の食卓へ届ける仕組みを、一緒に作りませんか。</p>
+    <div class="date">奥武蔵ポータル ／ ちきゅうっ子ファーム</div>
+  </div>
+</div>
+
+<footer>奥武蔵ポータル　│　地元の野菜を、地元の食卓へ</footer>
+
+</body>
+</html>
