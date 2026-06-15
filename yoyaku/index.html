@@ -118,8 +118,8 @@
     </section>
 
     <section>
-      <div class="stitle"><span class="mk" style="background:var(--clay)"></span>運営ビュー（みんなの集計）</div>
-      <div class="sdesc">全員の予約を合計した、各日の参加人数です。</div>
+      <div class="stitle"><span class="mk" style="background:var(--clay)"></span>運営ビュー（運営者だけが見られます）</div>
+      <div class="sdesc">参加者には人数だけを表示し、お名前は出しません。準備のための名簿は、この運営ビューでのみ確認できます。</div>
       <div class="admin">
         <div class="at">参 加 人 数 の 集 計</div>
         <div id="admin-rows"></div>
@@ -221,8 +221,8 @@
     $('acts').innerHTML = activities.map(function(a){
       var list=nameList(a.id), joined=name&&list.indexOf(name)>=0;
       var kc=a.kind==='farm'?'k-farm':'k-school';
-      var chips=list.length?list.map(function(p){return '<span class="chip'+(p===name?' me':'')+'">'+escapeHtml(p)+'</span>';}).join(''):'<span class="empty">まだ参加者はいません</span>';
-      return '<div class="act'+(joined?' mine':'')+'"><div class="ah"><div class="ai"><span class="kind '+kc+'">'+kindLabel(a.kind)+'</span><div class="date">'+fmt(a.starts_at)+'</div><div class="place">'+escapeHtml(a.place||'')+'</div></div><div class="cnt"><div class="c">'+list.length+'</div><div class="cl">人が参加予定</div></div></div><div class="members">'+chips+'</div><div class="actions">'+(joined?'<button class="btn btn-cancel" data-act="'+a.id+'">やっぱり行けない</button>':'<button class="btn btn-go" data-act="'+a.id+'">この日に行く</button>')+'</div></div>';
+      var youTxt = joined ? '<div class="members"><span class="chip me">あなたは参加予定です</span></div>' : '';
+      return '<div class="act'+(joined?' mine':'')+'"><div class="ah"><div class="ai"><span class="kind '+kc+'">'+kindLabel(a.kind)+'</span><div class="date">'+fmt(a.starts_at)+'</div><div class="place">'+escapeHtml(a.place||'')+'</div></div><div class="cnt"><div class="c">'+list.length+'</div><div class="cl">人が参加予定</div></div></div>'+youTxt+'<div class="actions">'+(joined?'<button class="btn btn-cancel" data-act="'+a.id+'">やっぱり行けない</button>':'<button class="btn btn-go" data-act="'+a.id+'">この日に行く</button>')+'</div></div>';
     }).join('');
 
     $('acts').querySelectorAll('button[data-act]').forEach(function(b){
@@ -230,7 +230,10 @@
     });
 
     $('admin-rows').innerHTML = activities.map(function(a){
-      return '<div class="arow"><span class="ad">'+fmt(a.starts_at)+'　<span style="opacity:.6;font-size:12px">'+kindLabel(a.kind)+'</span></span><span class="av">'+nameList(a.id).length+' 人</span></div>';
+      var list = nameList(a.id);
+      var names = list.length ? list.map(function(p){return escapeHtml(p);}).join('、') : '（まだいません）';
+      return '<div class="arow"><span class="ad">'+fmt(a.starts_at)+'　<span style="opacity:.6;font-size:12px">'+kindLabel(a.kind)+'</span></span><span class="av">'+list.length+' 人</span></div>'
+        +'<div style="font-size:12px;color:var(--paper-deep);opacity:.75;padding:2px 0 10px;border-bottom:1px solid rgba(246,241,231,.1)">'+names+'</div>';
     }).join('');
   }
 })();

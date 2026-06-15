@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ちきゅうっ子ファーム ── 予約ダッシュボード（デモ）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --soil:#2f2a24; --soil-soft:#4a4138; --paper:#f6f1e7; --paper-deep:#ece4d4;
+    --leaf:#5c7148; --leaf-deep:#3f5232; --clay:#bf6b3f; --gold:#c9a14a;
+    --line:#d6cbb5; --muted:#8a7f6c;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Zen Kaku Gothic New',sans-serif;background:var(--paper);color:var(--soil);line-height:1.8;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:840px;margin:0 auto;padding:0 22px}
+
+  .demobar{background:var(--gold);color:var(--soil);text-align:center;font-size:12px;font-weight:700;padding:7px;letter-spacing:.05em}
+
+  .hero{background:radial-gradient(circle at 85% -10%,rgba(201,161,74,.2),transparent 45%),linear-gradient(160deg,var(--leaf-deep),var(--soil) 130%);color:var(--paper);padding:42px 0 34px}
+  .hero .eyebrow{font-family:'Zen Old Mincho',serif;letter-spacing:.4em;font-size:11px;color:var(--gold);margin-bottom:12px;padding-left:.4em}
+  .hero h1{font-family:'Zen Old Mincho',serif;font-weight:900;font-size:28px;line-height:1.4}
+  .hero .lead{font-size:13px;color:var(--paper-deep);margin-top:12px;max-width:560px}
+  .hero .user{margin-top:16px;font-size:12.5px;color:var(--gold);display:flex;align-items:center;gap:8px}
+  .hero .user .dot{width:8px;height:8px;border-radius:50%;background:#7bbf6b;display:inline-block}
+
+  .today{background:var(--paper-deep);border-bottom:1px solid var(--line);padding:26px 0}
+  .today .row{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+  .today .big{display:flex;align-items:baseline;gap:6px}
+  .today .big .num{font-family:'Zen Old Mincho',serif;font-size:62px;font-weight:900;color:var(--leaf-deep);line-height:.9}
+  .today .big .unit{font-family:'Zen Old Mincho',serif;font-size:18px;color:var(--soil-soft)}
+  .today .meta .lbl{font-family:'Zen Old Mincho',serif;font-size:12px;color:var(--clay);letter-spacing:.15em;margin-bottom:3px}
+  .today .meta .dt{font-size:15px;font-weight:700}
+  .today .meta .sub{font-size:12.5px;color:var(--muted)}
+
+  section{padding:32px 0}
+  .stitle{font-family:'Zen Old Mincho',serif;font-size:18px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:10px}
+  .stitle .mk{width:6px;height:18px;background:var(--leaf);border-radius:2px}
+  .sdesc{font-size:12.5px;color:var(--muted);margin-bottom:20px}
+
+  .namebar{background:var(--paper-deep);border-radius:10px;padding:16px 18px;margin-bottom:24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .namebar label{font-size:12.5px;color:var(--soil-soft);font-weight:700;white-space:nowrap}
+  .namebar input{flex:1;min-width:140px;border:1px solid var(--line);border-radius:7px;padding:9px 12px;font-size:14px;font-family:'Zen Kaku Gothic New';background:var(--paper);color:var(--soil)}
+  .namebar .hint{font-size:11px;color:var(--muted);width:100%}
+
+  .acts{display:flex;flex-direction:column;gap:14px}
+  .act{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+  .act.mine{border-color:var(--leaf);box-shadow:0 3px 14px rgba(63,82,50,.1)}
+  .act .ah{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap}
+  .act .ai .kind{display:inline-block;font-size:10.5px;font-weight:700;color:#fff;padding:2px 9px;border-radius:20px;margin-bottom:7px}
+  .act .ai .kind.k-farm{background:var(--leaf)}
+  .act .ai .kind.k-school{background:var(--clay)}
+  .act .ai .date{font-family:'Zen Old Mincho',serif;font-size:19px;font-weight:700}
+  .act .ai .place{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .act .cnt{text-align:right;white-space:nowrap}
+  .act .cnt .c{font-family:'Zen Old Mincho',serif;font-size:30px;font-weight:900;color:var(--leaf-deep);line-height:1}
+  .act .cnt .cl{font-size:11px;color:var(--muted)}
+  .act .members{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);display:flex;flex-wrap:wrap;gap:7px;min-height:8px}
+  .act .chip{font-size:12px;background:var(--paper-deep);border-radius:20px;padding:4px 12px;color:var(--soil-soft)}
+  .act .chip.me{background:var(--leaf);color:#fff}
+  .act .empty{font-size:12px;color:var(--muted)}
+  .act .actions{margin-top:14px;display:flex;gap:9px;flex-wrap:wrap}
+  .btn{font-family:'Zen Kaku Gothic New';font-size:13px;font-weight:700;border:none;border-radius:7px;padding:9px 18px;cursor:pointer;transition:transform .08s}
+  .btn:active{transform:scale(.97)}
+  .btn-go{background:var(--leaf-deep);color:#fff}
+  .btn-cancel{background:var(--paper-deep);color:var(--soil-soft)}
+
+  .admin{background:var(--soil);color:var(--paper-deep);border-radius:12px;padding:22px 24px}
+  .admin .at{font-family:'Zen Old Mincho',serif;color:var(--gold);font-size:13px;letter-spacing:.2em;margin-bottom:16px}
+  .admin .arow{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid rgba(246,241,231,.12);font-size:13.5px}
+  .admin .arow:last-child{border-bottom:none}
+  .admin .arow .ad{color:var(--paper)}
+  .admin .arow .av{font-family:'Zen Old Mincho',serif;font-size:18px;font-weight:700;color:var(--gold)}
+  .admin .tools{margin-top:18px;display:flex;gap:9px;flex-wrap:wrap}
+  .admin .tools .tbtn{background:transparent;color:var(--paper-deep);border:1px solid rgba(246,241,231,.3);border-radius:7px;padding:8px 16px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:'Zen Kaku Gothic New'}
+
+  footer{text-align:center;padding:26px;font-size:11.5px;letter-spacing:.1em;color:var(--muted);font-family:'Zen Old Mincho',serif}
+  @media(max-width:600px){.hero h1{font-size:23px}.today .big .num{font-size:48px}}
+</style>
+</head>
+<body>
+
+<div class="demobar">これはデモ画面です（仮のデータが入っています）</div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">ち き ゅ う っ 子 フ ァ ー ム</div>
+    <h1>今日の畑、何人集まる？</h1>
+    <p class="lead">活動日を選んで「行く」を押すだけ。みんなの予約がリアルタイムで集まり、運営も参加者も人数が見えます。</p>
+    <div class="user"><span class="dot"></span>データベースに接続中　／　ログイン：かとう さん</div>
+  </div>
+</header>
+
+<div class="today">
+  <div class="wrap"><div class="row" id="today-box"></div></div>
+</div>
+
+<div class="wrap">
+
+  <section>
+    <div class="namebar">
+      <label>あなたの名前</label>
+      <input type="text" id="myname" value="かとう" maxlength="20">
+      <div class="hint">名前を入れてから「行く」を押してください。この名前で予約が記録されます。</div>
+    </div>
+    <div class="stitle"><span class="mk"></span>活動日をえらぶ</div>
+    <div class="sdesc">日曜は共同家庭菜園、土曜はしぜん農村塾。行ける日に「行く」を押してください。</div>
+    <div class="acts" id="acts"></div>
+  </section>
+
+  <section>
+    <div class="stitle"><span class="mk" style="background:var(--clay)"></span>運営ビュー（運営者だけが見られます）</div>
+    <div class="sdesc">参加者には人数だけを表示し、お名前は出しません。準備のための名簿は、この運営ビューでのみ確認できます。</div>
+    <div class="admin">
+      <div class="at">参 加 人 数 の 集 計</div>
+      <div id="admin-rows"></div>
+      <div class="tools">
+        <button class="tbtn">CSVで書き出す</button>
+        <button class="tbtn">LINEで参加者に連絡</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>ちきゅうっ子ファーム ／ 奥武蔵　│　デモ画面</footer>
+
+<script>
+(function(){
+  // デモ用ダミーデータ（DBに入っている想定）
+  var ACTIVITIES = [
+    {id:'a1', kind:'farm',   date:'7月12日(日)', place:'共同家庭菜園 ／ 下川崎の畑', label:'共同家庭菜園', cap:null,
+      members:['かとう','もり','たなか','すずき','やまだ','こばやし']},
+    {id:'a2', kind:'school', date:'7月11日(土)', place:'しぜん農村塾 ／ 体験イベント', label:'しぜん農村塾', cap:20,
+      members:['さとう','いとう','わたなべ']},
+    {id:'a3', kind:'farm',   date:'7月19日(日)', place:'共同家庭菜園 ／ 下川崎の畑', label:'共同家庭菜園', cap:null,
+      members:['かとう','もり','なかむら']},
+    {id:'a4', kind:'school', date:'7月25日(土)', place:'しぜん農村塾 ／ 体験イベント', label:'しぜん農村塾', cap:20,
+      members:['たかはし','まつもと','いのうえ','きむら','はやし']},
+    {id:'a5', kind:'farm',   date:'7月26日(日)', place:'共同家庭菜園 ／ 下川崎の畑', label:'共同家庭菜園', cap:null,
+      members:['もり']}
+  ];
+
+  function $(id){return document.getElementById(id);}
+  function escapeHtml(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function myName(){ return $('myname').value.trim(); }
+
+  function toggle(id){
+    var name=myName(); if(!name) return;
+    var a=ACTIVITIES.filter(function(x){return x.id===id;})[0];
+    var i=a.members.indexOf(name);
+    if(i>=0) a.members.splice(i,1); else a.members.push(name);
+    render();
+  }
+
+  function render(){
+    var name=myName();
+    var t=ACTIVITIES[0], tc=t.members.length;
+    $('today-box').innerHTML = tc>0
+      ? '<div class="big"><span class="num">'+tc+'</span><span class="unit">人</span></div><div class="meta"><div class="lbl">いちばん近い活動日</div><div class="dt">'+t.date+'</div><div class="sub">'+t.label+'　いま参加予定</div></div>'
+      : '<div class="big"><span class="num">0</span><span class="unit">人</span></div><div class="meta"><div class="lbl">いちばん近い活動日</div><div class="dt">'+t.date+'</div><div class="sub">まだ誰も参加していません</div></div>';
+
+    $('acts').innerHTML = ACTIVITIES.map(function(a){
+      var joined=name&&a.members.indexOf(name)>=0;
+      var kc=a.kind==='farm'?'k-farm':'k-school';
+      var capTxt=a.cap?('　/ 定員'+a.cap):'';
+      var youTxt = joined ? '<div class="members"><span class="chip me">あなたは参加予定です</span></div>' : '';
+      return '<div class="act'+(joined?' mine':'')+'"><div class="ah"><div class="ai"><span class="kind '+kc+'">'+a.label+'</span><div class="date">'+a.date+'</div><div class="place">'+a.place+capTxt+'</div></div><div class="cnt"><div class="c">'+a.members.length+'</div><div class="cl">人が参加予定</div></div></div>'+youTxt+'<div class="actions">'+(joined?'<button class="btn btn-cancel" data-act="'+a.id+'">やっぱり行けない</button>':'<button class="btn btn-go" data-act="'+a.id+'">この日に行く</button>')+'</div></div>';
+    }).join('');
+
+    $('acts').querySelectorAll('button[data-act]').forEach(function(b){
+      b.addEventListener('click',function(){ toggle(b.getAttribute('data-act')); });
+    });
+
+    $('admin-rows').innerHTML = ACTIVITIES.map(function(a){
+      var names = a.members.length ? a.members.map(function(p){return escapeHtml(p);}).join('、') : '（まだいません）';
+      return '<div class="arow"><span class="ad">'+a.date+'　<span style="opacity:.6;font-size:12px">'+a.label+'</span></span><span class="av">'+a.members.length+' 人</span></div>'
+        +'<div style="font-size:12px;color:var(--paper-deep);opacity:.75;padding:2px 0 10px;border-bottom:1px solid rgba(246,241,231,.1)">'+names+'</div>';
+    }).join('');
+  }
+
+  $('myname').addEventListener('input', render);
+  render();
+})();
+</script>
+
+</body>
+</html>
