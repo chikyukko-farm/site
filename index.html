@@ -204,6 +204,21 @@
   details.more summary:hover{color:var(--soil)}
   details.more .inner{padding-top:10px}
 
+  /* ---- 役割分担テーブル ---- */
+  .roles{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px}
+  .roles th,.roles td{padding:11px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  .roles thead th{font-family:'Zen Old Mincho',serif;color:var(--clay);font-size:12.5px;border-bottom:2px solid var(--line)}
+  .roles td.who{white-space:nowrap;font-weight:700}
+  .roles .pill{display:inline-block;font-size:11px;font-weight:700;color:#fff;border-radius:20px;padding:2px 11px}
+  .pill.nishi{background:var(--leaf-deep)}
+  .pill.kato{background:var(--clay)}
+  .pill.mori{background:#7a9bb0}
+  .pill.moku{background:#9c7fb0}
+  .pill.team{background:var(--muted)}
+  .roles td.st{white-space:nowrap;font-size:12px;color:var(--muted)}
+  .rolekey{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--soil-soft);margin:14px 0 4px}
+  .rolekey span{display:flex;align-items:center;gap:6px}
+
   footer{background:var(--soil);color:var(--paper-deep);text-align:center;padding:30px;font-size:12.5px;letter-spacing:.1em;font-family:'Zen Old Mincho',serif}
 
   /* ---- site nav (hub) ---- */
@@ -314,10 +329,11 @@
 <nav class="sitenav">
   <div class="nlabel">ち き ゅ う っ 子 ／ 奥 武 蔵 ・ 資 料 一 覧</div>
   <div class="ngrid">
-      <a class="ncard current" href="./"><div class="nt">この資料（全体整理）</div><div class="nd">2つの箱・方向性・リサーチ</div><span class="nbadge">いま表示中</span></a>
-      <a class="ncard" href="kpi/"><div class="nt">事業計画ダッシュボード</div><div class="nd">収支表の数字・4年推移・試算</div><span class="nbadge">数字</span></a>
-      <a class="ncard" href="farmer/"><div class="nt">農家向けプレゼン</div><div class="nd">近隣の生産者を誘う営業資料</div><span class="nbadge">営業用</span></a>
-      <a class="ncard" href="yoyaku-demo/"><div class="nt">予約デモ</div><div class="nd">今日の畑、何人集まる？</div><span class="nbadge">先方共有用</span></a>
+      <a class="ncard" href="plan/"><div class="nt">事業計画表</div><div class="nd">全体の流れ・タスク・進捗（メイン）</div><span class="nbadge">メイン</span></a>
+      <a class="ncard current" href="./"><div class="nt">くわしい資料</div><div class="nd">2つの箱・方向性・リサーチ</div><span class="nbadge">いま表示中</span></a>
+      <a class="ncard" href="kpi/"><div class="nt">数字で見る</div><div class="nd">収支・4年推移・試算</div><span class="nbadge">数字</span></a>
+      <a class="ncard" href="farmer/"><div class="nt">農家向けプレゼン</div><div class="nd">近隣の生産者を誘う資料</div><span class="nbadge">営業用</span></a>
+      <a class="ncard" href="yoyaku-demo/"><div class="nt">予約デモ</div><div class="nd">今日の畑、何人集まる？</div><span class="nbadge">運用</span></a>
   </div>
 </nav>
 
@@ -526,10 +542,45 @@
   </div>
 </section>
 
+<!-- 役割分担 -->
+<section>
+  <div class="wrap">
+    <div class="label"><span class="no">08</span><h2>誰が何をやるか ── 役割分担</h2></div>
+    <div class="point"><span class="pi">要点</span><span class="pt">西川は「作るもの（資料・Web・動画・仕組み）」を担当。農業の実務・行政・営業は、現場のみなさんにお任せします。</span></div>
+    <p class="lead">タスクが混ざると動きにくいので、誰が持つかをはっきりさせました。西川は制作に専念し、現場の判断はみなさんの領域として尊重します。</p>
+
+    <div class="rolekey">
+      <span><i class="pill nishi">西川</i>制作（Web・動画・資料・仕組み）</span>
+      <span><i class="pill kato">加藤さん</i>現場運営・行政</span>
+      <span><i class="pill mori">森さん</i>地域・渡り</span>
+      <span><i class="pill moku">もくねん</i>製造</span>
+    </div>
+
+    <div style="overflow-x:auto">
+    <table class="roles">
+      <thead><tr><th>やること</th><th>主担当</th><th>いまの状態</th></tr></thead>
+      <tbody>
+        <tr><td>奥武蔵ポータルの制作</td><td class="who"><span class="pill nishi">西川</span></td><td class="st">名前が決まり次第着手</td></tr>
+        <tr><td>ペレ炭・グリルの見せ方（動画・ページ）</td><td class="who"><span class="pill nishi">西川</span></td><td class="st">商品が固まり次第</td></tr>
+        <tr><td>予約・出欠の仕組み</td><td class="who"><span class="pill nishi">西川</span></td><td class="st">デモ完成・本番は今後</td></tr>
+        <tr><td>農家向けプレゼン資料</td><td class="who"><span class="pill nishi">西川</span></td><td class="st">初版あり・随時更新</td></tr>
+        <tr><td>125名の参加導線（LINE・申込）</td><td class="who"><span class="pill nishi">西川</span></td><td class="st">最優先で設計</td></tr>
+        <tr><td>事業計画ダッシュボード</td><td class="who"><span class="pill nishi">西川</span></td><td class="st">収支表をもとに作成済み</td></tr>
+        <tr><td>ポータルの名前を決める</td><td class="who"><span class="pill team">みんな</span></td><td class="st">候補あり・次回決定</td></tr>
+        <tr><td>農地マッチングの進め方・手続き</td><td class="who"><span class="pill kato">加藤さん</span></td><td class="st">方向を相談中</td></tr>
+        <tr><td>共同家庭菜園の運営方針</td><td class="who"><span class="pill kato">加藤さん</span></td><td class="st">無料化・自律分散の方向</td></tr>
+        <tr><td>農業委員さんへのプレゼン</td><td class="who"><span class="pill mori">森さん</span></td><td class="st">これから実施</td></tr>
+        <tr><td>ペレ炭・グリルの価格・製造</td><td class="who"><span class="pill moku">もくねん</span> <span class="pill kato">加藤さん</span></td><td class="st">価格を検討中</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
 <!-- KPI dashboard -->
 <section>
   <div class="wrap">
-    <div class="label"><span class="no">08</span><h2>数字で見る ── KPIダッシュボード</h2></div>
+    <div class="label"><span class="no">09</span><h2>数字で見る ── KPIダッシュボード</h2></div>
     <div class="point"><span class="pi">使い方</span><span class="pt">数字を入れると売上と達成率が動きます。打ち合わせで実数を入れてみてください。</span></div>
     <p class="lead">各事業の数字を入れると、売上・目標達成率・収穫祭までの全体像がその場で見えます。空欄は仮の数字でかまいません。打ち合わせで実数を入れて動かしてください。</p>
 
@@ -626,7 +677,7 @@
 <!-- 9 -->
 <section>
   <div class="wrap">
-    <div class="label"><span class="no">09</span><h2>リサーチで分かったこと</h2></div>
+    <div class="label"><span class="no">10</span><h2>リサーチで分かったこと</h2></div>
     <div class="point"><span class="pi">調べた結果</span><span class="pt">未確定だった点を調べました。事実が取れたものと、先方に直接聞くべきものを分けています。</span></div>
     <p class="lead">前回まで未確定だった点を調べました。事実が取れたものと、なお先方に直接聞くべきものを分けています。</p>
     <div class="check">
