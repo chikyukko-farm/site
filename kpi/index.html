@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ちきゅうっ子ファーム ── 事業計画ダッシュボード</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --soil:#2f2a24; --soil-soft:#4a4138; --paper:#f6f1e7; --paper-deep:#ece4d4;
+    --leaf:#5c7148; --leaf-deep:#3f5232; --clay:#bf6b3f; --gold:#c9a14a;
+    --line:#d6cbb5; --muted:#8a7f6c; --red:#b5503f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Zen Kaku Gothic New',sans-serif;background:var(--paper);color:var(--soil);line-height:1.8;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:900px;margin:0 auto;padding:0 22px}
+
+  .hero{background:radial-gradient(circle at 85% -10%,rgba(201,161,74,.2),transparent 45%),linear-gradient(160deg,var(--leaf-deep),var(--soil) 130%);color:var(--paper);padding:42px 0 34px}
+  .hero .eyebrow{font-family:'Zen Old Mincho',serif;letter-spacing:.4em;font-size:11px;color:var(--gold);margin-bottom:12px;padding-left:.4em}
+  .hero h1{font-family:'Zen Old Mincho',serif;font-weight:900;font-size:27px;line-height:1.4}
+  .hero .lead{font-size:13px;color:var(--paper-deep);margin-top:12px;max-width:620px}
+
+  section{padding:30px 0}
+  .stitle{font-family:'Zen Old Mincho',serif;font-size:18px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:10px}
+  .stitle .mk{width:6px;height:18px;background:var(--leaf);border-radius:2px}
+  .sdesc{font-size:12.5px;color:var(--muted);margin-bottom:20px}
+
+  /* サマリーカード */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:10px}
+  .kcard{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px 18px;text-align:center}
+  .kcard .l{font-size:11.5px;color:var(--muted);margin-bottom:4px}
+  .kcard .v{font-family:'Zen Old Mincho',serif;font-size:24px;font-weight:900;color:var(--leaf-deep);line-height:1.1}
+  .kcard .v.red{color:var(--red)}
+  .kcard .s{font-size:10.5px;color:var(--muted);margin-top:3px}
+
+  /* グラフ */
+  .chartbox{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:20px;margin-bottom:16px}
+  .chartbox h4{font-family:'Zen Old Mincho',serif;font-size:14px;margin-bottom:14px;color:var(--soil)}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:11.5px;color:var(--soil-soft);margin-bottom:8px}
+  .legend span{display:flex;align-items:center;gap:5px}
+  .legend i{width:11px;height:11px;border-radius:2px;display:inline-block}
+
+  /* テーブル */
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th,td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--line)}
+  th:first-child,td:first-child{text-align:left}
+  thead th{font-family:'Zen Old Mincho',serif;color:var(--clay);font-size:12px;border-bottom:2px solid var(--line)}
+  tr.total td{font-weight:700;border-top:2px solid var(--line);border-bottom:none}
+  tr.profit td{font-family:'Zen Old Mincho',serif;font-weight:700;background:var(--paper-deep)}
+  td.neg{color:var(--red)}
+
+  /* シミュレーター */
+  .sim{background:var(--soil);color:var(--paper-deep);border-radius:12px;padding:24px}
+  .sim h4{font-family:'Zen Old Mincho',serif;color:var(--gold);font-size:14px;letter-spacing:.1em;margin-bottom:16px}
+  .simrow{display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+  .simrow label{font-size:12.5px;flex:1;min-width:130px;color:var(--paper)}
+  .simrow input{width:110px;border:1px solid rgba(246,241,231,.25);border-radius:7px;padding:7px 10px;font-size:14px;background:rgba(246,241,231,.08);color:#fff;font-family:'Zen Kaku Gothic New';text-align:right}
+  .simrow input:focus{outline:none;border-color:var(--gold)}
+  .simrow .unit{font-size:11.5px;color:var(--muted);width:30px}
+  .simout{margin-top:18px;padding-top:18px;border-top:1px solid rgba(246,241,231,.15);display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .simout .o{text-align:center}
+  .simout .o .ol{font-size:11px;color:var(--paper-deep);margin-bottom:3px}
+  .simout .o .ov{font-family:'Zen Old Mincho',serif;font-size:23px;font-weight:900;color:var(--gold)}
+  .simout .o .ov.red{color:#e89080}
+  .simnote{font-size:11px;color:var(--muted);margin-top:14px}
+
+
+  /* ---- site nav (hub) ---- */
+  .sitenav{background:var(--soil);padding:22px 0 26px;border-bottom:1px solid rgba(246,241,231,.12)}
+  .sitenav .nlabel{text-align:center;font-family:'Zen Old Mincho',serif;color:var(--gold);font-size:11px;letter-spacing:.3em;margin-bottom:16px}
+  .sitenav .ngrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;max-width:880px;margin:0 auto;padding:0 26px}
+  .sitenav a.ncard{display:block;text-decoration:none;background:linear-gradient(160deg,var(--leaf-deep),var(--soil-soft,#4a4138));border:1px solid rgba(246,241,231,.15);border-radius:9px;padding:16px 18px;transition:transform .1s,border-color .15s}
+  .sitenav a.ncard:hover{transform:translateY(-2px);border-color:var(--gold)}
+  .sitenav a.ncard.current{background:linear-gradient(160deg,var(--clay),#8a4f2d);border-color:var(--gold)}
+  .sitenav a.ncard .nt{font-family:'Zen Old Mincho',serif;font-size:15px;font-weight:700;color:var(--paper);margin-bottom:3px}
+  .sitenav a.ncard .nd{font-size:11.5px;color:var(--paper-deep);line-height:1.5}
+  .sitenav a.ncard .nbadge{display:inline-block;font-size:9.5px;font-weight:700;color:var(--gold);border:1px solid var(--gold);border-radius:20px;padding:1px 8px;margin-top:8px;letter-spacing:.05em}
+
+  footer{text-align:center;padding:26px;font-size:11.5px;letter-spacing:.1em;color:var(--muted);font-family:'Zen Old Mincho',serif}
+  @media(max-width:600px){.hero h1{font-size:22px}.simout{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">ち き ゅ う っ 子 フ ァ ー ム</div>
+    <h1>事業計画ダッシュボード</h1>
+    <p class="lead">いただいた収支計算ツールの数字を、見やすく整理しました。4年間の見通しと、数字を動かして試せるシミュレーターです。打ち合わせの土台にどうぞ。</p>
+  </div>
+</header>
+<nav class="sitenav">
+  <div class="nlabel">ち き ゅ う っ 子 ／ 奥 武 蔵 ・ 資 料 一 覧</div>
+  <div class="ngrid">
+      <a class="ncard" href="../"><div class="nt">この資料（全体整理）</div><div class="nd">2つの箱・方向性・リサーチ</div><span class="nbadge">まとめ</span></a>
+      <a class="ncard current" href="./"><div class="nt">事業計画ダッシュボード</div><div class="nd">収支表の数字・4年推移・試算</div><span class="nbadge">いま表示中</span></a>
+      <a class="ncard" href="../farmer/"><div class="nt">農家向けプレゼン</div><div class="nd">近隣の生産者を誘う営業資料</div><span class="nbadge">営業用</span></a>
+      <a class="ncard" href="../yoyaku-demo/"><div class="nt">予約デモ</div><div class="nd">今日の畑、何人集まる？</div><span class="nbadge">先方共有用</span></a>
+  </div>
+</nav>
+
+
+<div class="wrap">
+
+  <!-- サマリー -->
+  <section>
+    <div class="stitle"><span class="mk"></span>4年間の見通し（計画値）</div>
+    <div class="sdesc">初年度は先行投資で赤字、2年目から黒字化していく計画です。</div>
+    <div class="cards" id="summary"></div>
+  </section>
+
+  <!-- 売上と利益の推移 -->
+  <section>
+    <div class="stitle"><span class="mk"></span>売上と営業利益の推移</div>
+    <div class="sdesc">売上は伸び続け、営業利益は2年目にプラスへ。</div>
+    <div class="chartbox">
+      <div class="legend">
+        <span><i style="background:var(--leaf)"></i>売上高</span>
+        <span><i style="background:var(--clay)"></i>営業利益</span>
+      </div>
+      <svg id="chart1" viewBox="0 0 860 300" style="width:100%;height:auto"></svg>
+    </div>
+  </section>
+
+  <!-- 事業別売上 -->
+  <section>
+    <div class="stitle"><span class="mk" style="background:var(--clay)"></span>何で売上を作るか（事業別）</div>
+    <div class="sdesc">農業体験塾が最大の成長エンジン。複数の柱で支えます。</div>
+    <div class="chartbox">
+      <svg id="chart2" viewBox="0 0 860 320" style="width:100%;height:auto"></svg>
+    </div>
+  </section>
+
+  <!-- 損益テーブル -->
+  <section>
+    <div class="stitle"><span class="mk"></span>損益のまとめ</div>
+    <div class="sdesc">売上から原価・経費を引いた、営業利益までの流れ。</div>
+    <div class="chartbox" style="overflow-x:auto">
+      <table id="pltable"></table>
+    </div>
+  </section>
+
+  <!-- シミュレーター -->
+  <section>
+    <div class="stitle"><span class="mk" style="background:var(--gold)"></span>数字を動かして試す</div>
+    <div class="sdesc">会員数や単価を変えると、年間の売上と利益がどう変わるか試算できます（初年度ベース）。</div>
+    <div class="sim">
+      <h4>か ん た ん 試 算（初 年 度）</h4>
+      <div class="simrow"><label>農業体験塾の年間のべ参加</label><input type="number" id="s-taiken" value="80"><span class="unit">人</span></div>
+      <div class="simrow"><label>体験塾の単価</label><input type="number" id="s-taikenP" value="6000"><span class="unit">円</span></div>
+      <div class="simrow"><label>共同菜園 会員数</label><input type="number" id="s-kaien" value="8"><span class="unit">人</span></div>
+      <div class="simrow"><label>菜園 月会費</label><input type="number" id="s-kaienP" value="2500"><span class="unit">円</span></div>
+      <div class="simrow"><label>農作物・小売の年間売上</label><input type="number" id="s-uri" value="1100000"><span class="unit">円</span></div>
+      <div class="simrow"><label>年間の固定費（経費の目安）</label><input type="number" id="s-cost" value="3000000"><span class="unit">円</span></div>
+      <div class="simout">
+        <div class="o"><div class="ol">年間 売上（試算）</div><div class="ov" id="o-sales">¥0</div></div>
+        <div class="o"><div class="ol">年間 利益（試算）</div><div class="ov" id="o-profit">¥0</div></div>
+      </div>
+      <div class="simnote">※ 計画値をもとにした簡易試算です。実際の収支計算ツールには、より細かい項目が含まれます。</div>
+    </div>
+  </section>
+
+</div>
+
+<footer>ちきゅうっ子ファーム ／ 奥武蔵　│　事業計画ダッシュボード</footer>
+
+<script>
+(function(){
+  // ===== 収支計算ツールの実数（2026〜2029）=====
+  var YEARS=['2026','2027','2028','2029'];
+  var SALES=[2615000,7489000,11463000,13103000];       // 売上高合計
+  var PROFIT=[-1248200,420539,3548273,3535407];          // 営業利益
+  var MEMBERS=[8,56,64,72];                              // 会員数(年末)
+  var STAFF=[1,2,2,2];                                   // スタッフ数(年末)
+  var COGS=[785000,1652621,2275207,2510793];             // 売上原価合計
+  var GROSS=[1830000,5836379,9187793,10592207];          // 売上総利益
+  var SGA=[3078200,5415840,5639520,7056800];             // 販管費合計
+
+  // 事業別売上
+  var SEG=[
+    {name:'農業体験塾',   color:'#5c7148', v:[480000,3264000,5856000,6624000]},
+    {name:'農村体験イベント',color:'#bf6b3f', v:[750000,1680000,2550000,2910000]},
+    {name:'農作物小売り', color:'#c9a14a', v:[1100000,1300000,1500000,1700000]},
+    {name:'共同菜園(大人)',color:'#7a9bb0', v:[157500,660000,1140000,1380000]},
+    {name:'共同菜園(学生)',color:'#9c7fb0', v:[40500,189000,333000,405000]},
+    {name:'入会金',       color:'#8a7f6c', v:[87000,396000,84000,84000]}
+  ];
+
+  function yen(n){ return '¥'+Math.round(n).toLocaleString('ja-JP'); }
+  function man(n){ return (n/10000).toFixed(0)+'万'; }
+
+  // ===== サマリーカード =====
+  document.getElementById('summary').innerHTML =
+    YEARS.map(function(y,i){
+      var pr=PROFIT[i], red=pr<0?' red':'';
+      return '<div class="kcard"><div class="l">'+y+'年</div>'
+        +'<div class="v">'+man(SALES[i])+'</div><div class="s">売上</div>'
+        +'<div class="v'+red+'" style="font-size:17px;margin-top:8px">'+(pr<0?'▲':'')+man(Math.abs(pr))+'</div><div class="s">営業利益　会員'+MEMBERS[i]+'人</div></div>';
+    }).join('');
+
+  // ===== 折れ線グラフ（売上・利益）=====
+  (function(){
+    var W=860,H=300,pad={l:60,r:20,t:20,b:40};
+    var maxV=Math.max.apply(null,SALES), minV=Math.min.apply(null,PROFIT,[0]);
+    var rng=maxV-minV;
+    function x(i){ return pad.l+(W-pad.l-pad.r)*i/(YEARS.length-1); }
+    function y(v){ return pad.t+(H-pad.t-pad.b)*(1-(v-minV)/rng); }
+    var svg='';
+    // ゼロ線
+    svg+='<line x1="'+pad.l+'" y1="'+y(0)+'" x2="'+(W-pad.r)+'" y2="'+y(0)+'" stroke="#d6cbb5" stroke-width="1"/>';
+    // 軸ラベル（年）
+    YEARS.forEach(function(yr,i){ svg+='<text x="'+x(i)+'" y="'+(H-15)+'" font-size="12" fill="#8a7f6c" text-anchor="middle">'+yr+'</text>'; });
+    // 売上線
+    var salesPts=SALES.map(function(v,i){return x(i)+','+y(v);}).join(' ');
+    svg+='<polyline points="'+salesPts+'" fill="none" stroke="#5c7148" stroke-width="3"/>';
+    SALES.forEach(function(v,i){ svg+='<circle cx="'+x(i)+'" cy="'+y(v)+'" r="4.5" fill="#5c7148"/>'; svg+='<text x="'+x(i)+'" y="'+(y(v)-12)+'" font-size="11" fill="#3f5232" text-anchor="middle" font-weight="700">'+man(v)+'</text>'; });
+    // 利益線
+    var prPts=PROFIT.map(function(v,i){return x(i)+','+y(v);}).join(' ');
+    svg+='<polyline points="'+prPts+'" fill="none" stroke="#bf6b3f" stroke-width="3" stroke-dasharray="2 0"/>';
+    PROFIT.forEach(function(v,i){ svg+='<circle cx="'+x(i)+'" cy="'+y(v)+'" r="4.5" fill="#bf6b3f"/>'; svg+='<text x="'+x(i)+'" y="'+(y(v)+(v<0?20:-12))+'" font-size="11" fill="#bf6b3f" text-anchor="middle" font-weight="700">'+(v<0?'▲':'')+man(Math.abs(v))+'</text>'; });
+    document.getElementById('chart1').innerHTML=svg;
+  })();
+
+  // ===== 積み上げ棒グラフ（事業別売上）=====
+  (function(){
+    var W=860,H=320,pad={l:50,r:140,t:20,b:40};
+    var totals=YEARS.map(function(_,i){ return SEG.reduce(function(s,seg){return s+seg.v[i];},0); });
+    var maxV=Math.max.apply(null,totals);
+    var bw=60;
+    function x(i){ return pad.l+(W-pad.l-pad.r)*(i+0.5)/YEARS.length - bw/2; }
+    function h(v){ return (H-pad.t-pad.b)*v/maxV; }
+    var svg='';
+    YEARS.forEach(function(yr,i){
+      var yacc=H-pad.b;
+      SEG.forEach(function(seg){
+        var hh=h(seg.v[i]);
+        yacc-=hh;
+        svg+='<rect x="'+x(i)+'" y="'+yacc+'" width="'+bw+'" height="'+hh+'" fill="'+seg.color+'"/>';
+      });
+      svg+='<text x="'+(x(i)+bw/2)+'" y="'+(H-15)+'" font-size="12" fill="#8a7f6c" text-anchor="middle">'+yr+'</text>';
+      svg+='<text x="'+(x(i)+bw/2)+'" y="'+(H-pad.b-h(totals[i])-8)+'" font-size="11" fill="#3f5232" text-anchor="middle" font-weight="700">'+man(totals[i])+'</text>';
+    });
+    // 凡例
+    SEG.forEach(function(seg,k){
+      var ly=pad.t+k*22;
+      svg+='<rect x="'+(W-130)+'" y="'+ly+'" width="12" height="12" fill="'+seg.color+'"/>';
+      svg+='<text x="'+(W-113)+'" y="'+(ly+11)+'" font-size="11.5" fill="#4a4138">'+seg.name+'</text>';
+    });
+    document.getElementById('chart2').innerHTML=svg;
+  })();
+
+  // ===== 損益テーブル =====
+  (function(){
+    function row(label,arr,cls){
+      return '<tr class="'+(cls||'')+'"><td>'+label+'</td>'+arr.map(function(v){
+        var neg=v<0?' class="neg"':'';
+        return '<td'+neg+'>'+(v<0?'▲':'')+Math.abs(Math.round(v)).toLocaleString('ja-JP')+'</td>';
+      }).join('')+'</tr>';
+    }
+    var html='<thead><tr><th>項目</th>'+YEARS.map(function(y){return '<th>'+y+'</th>';}).join('')+'</tr></thead><tbody>';
+    html+=row('売上高',SALES);
+    html+=row('売上原価',COGS);
+    html+=row('売上総利益',GROSS,'total');
+    html+=row('販管費',SGA);
+    html+=row('営業利益',PROFIT,'profit');
+    html+='</tbody>';
+    document.getElementById('pltable').innerHTML=html;
+  })();
+
+  // ===== シミュレーター =====
+  function calc(){
+    var taiken=+document.getElementById('s-taiken').value||0;
+    var taikenP=+document.getElementById('s-taikenP').value||0;
+    var kaien=+document.getElementById('s-kaien').value||0;
+    var kaienP=+document.getElementById('s-kaienP').value||0;
+    var uri=+document.getElementById('s-uri').value||0;
+    var cost=+document.getElementById('s-cost').value||0;
+    var sales = taiken*taikenP + kaien*kaienP*12 + uri;
+    var profit = sales - cost;
+    document.getElementById('o-sales').textContent=yen(sales);
+    var po=document.getElementById('o-profit');
+    po.textContent=(profit<0?'▲':'')+yen(Math.abs(profit)).replace('¥','¥');
+    po.className='ov'+(profit<0?' red':'');
+  }
+  ['s-taiken','s-taikenP','s-kaien','s-kaienP','s-uri','s-cost'].forEach(function(id){
+    document.getElementById(id).addEventListener('input',calc);
+  });
+  calc();
+})();
+</script>
+
+</body>
+</html>

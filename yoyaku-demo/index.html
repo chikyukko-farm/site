@@ -52,6 +52,9 @@
   .act .ai .kind{display:inline-block;font-size:10.5px;font-weight:700;color:#fff;padding:2px 9px;border-radius:20px;margin-bottom:7px}
   .act .ai .kind.k-farm{background:var(--leaf)}
   .act .ai .kind.k-school{background:var(--clay)}
+  .act .ai .kind.k-extra{background:#a8893c}
+  .act .task{margin-top:8px;font-size:13.5px;color:var(--soil);background:var(--paper-deep);border-radius:6px;padding:7px 12px;display:inline-block}
+  .act .task b{color:var(--clay);font-family:'Zen Old Mincho',serif;margin-right:6px}
   .act .ai .date{font-family:'Zen Old Mincho',serif;font-size:19px;font-weight:700}
   .act .ai .place{font-size:12.5px;color:var(--muted);margin-top:2px}
   .act .cnt{text-align:right;white-space:nowrap}
@@ -107,9 +110,10 @@
 <nav class="sitenav">
   <div class="nlabel">ち き ゅ う っ 子 ／ 奥 武 蔵 ・ 資 料 一 覧</div>
   <div class="ngrid">
-      <a class="ncard" href="../"><div class="nt">この資料（全体整理）</div><div class="nd">2つの箱・KPI・収益シミュレーター・リサーチ</div><span class="nbadge">まとめ</span></a>
-      <a class="ncard" href="../farmer/"><div class="nt">農家向けプレゼン</div><div class="nd">近隣の生産者を誘うための営業資料</div><span class="nbadge">営業用</span></a>
-      <a class="ncard current" href="./"><div class="nt">予約デモ</div><div class="nd">「今日の畑、何人集まる？」の見本</div><span class="nbadge">いま表示中</span></a>
+      <a class="ncard" href="../"><div class="nt">この資料（全体整理）</div><div class="nd">2つの箱・方向性・リサーチ</div><span class="nbadge">まとめ</span></a>
+      <a class="ncard" href="../kpi/"><div class="nt">事業計画ダッシュボード</div><div class="nd">収支表の数字・4年推移・試算</div><span class="nbadge">数字</span></a>
+      <a class="ncard" href="../farmer/"><div class="nt">農家向けプレゼン</div><div class="nd">近隣の生産者を誘う営業資料</div><span class="nbadge">営業用</span></a>
+      <a class="ncard current" href="./"><div class="nt">予約デモ</div><div class="nd">今日の畑、何人集まる？</div><span class="nbadge">いま表示中</span></a>
   </div>
 </nav>
 
@@ -152,15 +156,17 @@
 (function(){
   // デモ用ダミーデータ（DBに入っている想定）
   var ACTIVITIES = [
-    {id:'a1', kind:'farm',   date:'7月12日(日)', place:'共同家庭菜園 ／ 下川崎の畑', label:'共同家庭菜園', cap:null,
+    {id:'a1', kind:'farm',   date:'7月12日(日)', place:'共同家庭菜園 ／ 下川崎の畑', label:'共同家庭菜園', task:'夏野菜の収穫・水やり', cap:null,
       members:['かとう','もり','たなか','すずき','やまだ','こばやし']},
-    {id:'a2', kind:'school', date:'7月11日(土)', place:'しぜん農村塾 ／ 体験イベント', label:'しぜん農村塾', cap:20,
+    {id:'a6', kind:'extra',  date:'7月15日(水)', place:'下川崎の畑', label:'臨時', task:'草刈り（人手募集！）', cap:null,
+      members:['かとう','もり']},
+    {id:'a2', kind:'school', date:'7月11日(土)', place:'しぜん農村塾 ／ 体験イベント', label:'しぜん農村塾', task:'おせんべいづくり体験', cap:20,
       members:['さとう','いとう','わたなべ']},
-    {id:'a3', kind:'farm',   date:'7月19日(日)', place:'共同家庭菜園 ／ 下川崎の畑', label:'共同家庭菜園', cap:null,
+    {id:'a3', kind:'farm',   date:'7月19日(日)', place:'共同家庭菜園 ／ 下川崎の畑', label:'共同家庭菜園', task:'草むしり・苗の植え付け', cap:null,
       members:['かとう','もり','なかむら']},
-    {id:'a4', kind:'school', date:'7月25日(土)', place:'しぜん農村塾 ／ 体験イベント', label:'しぜん農村塾', cap:20,
+    {id:'a4', kind:'school', date:'7月25日(土)', place:'しぜん農村塾 ／ 体験イベント', label:'しぜん農村塾', task:'七夕馬づくり体験', cap:20,
       members:['たかはし','まつもと','いのうえ','きむら','はやし']},
-    {id:'a5', kind:'farm',   date:'7月26日(日)', place:'共同家庭菜園 ／ 下川崎の畑', label:'共同家庭菜園', cap:null,
+    {id:'a5', kind:'farm',   date:'7月26日(日)', place:'共同家庭菜園 ／ 下川崎の畑', label:'共同家庭菜園', task:'収穫・草刈り', cap:null,
       members:['もり']}
   ];
 
@@ -180,15 +186,16 @@
     var name=myName();
     var t=ACTIVITIES[0], tc=t.members.length;
     $('today-box').innerHTML = tc>0
-      ? '<div class="big"><span class="num">'+tc+'</span><span class="unit">人</span></div><div class="meta"><div class="lbl">いちばん近い活動日</div><div class="dt">'+t.date+'</div><div class="sub">'+t.label+'　いま参加予定</div></div>'
+      ? '<div class="big"><span class="num">'+tc+'</span><span class="unit">人</span></div><div class="meta"><div class="lbl">いちばん近い活動日</div><div class="dt">'+t.date+'</div><div class="sub">'+t.label+(t.task?'　'+escapeHtml(t.task):'')+'　／　いま参加予定</div></div>'
       : '<div class="big"><span class="num">0</span><span class="unit">人</span></div><div class="meta"><div class="lbl">いちばん近い活動日</div><div class="dt">'+t.date+'</div><div class="sub">まだ誰も参加していません</div></div>';
 
     $('acts').innerHTML = ACTIVITIES.map(function(a){
       var joined=name&&a.members.indexOf(name)>=0;
-      var kc=a.kind==='farm'?'k-farm':'k-school';
+      var kc=a.kind==='farm'?'k-farm':(a.kind==='school'?'k-school':'k-extra');
       var capTxt=a.cap?('　/ 定員'+a.cap):'';
+      var taskTxt = a.task ? '<div class="task"><b>内容</b>'+escapeHtml(a.task)+'</div>' : '';
       var youTxt = joined ? '<div class="members"><span class="chip me">あなたは参加予定です</span></div>' : '';
-      return '<div class="act'+(joined?' mine':'')+'"><div class="ah"><div class="ai"><span class="kind '+kc+'">'+a.label+'</span><div class="date">'+a.date+'</div><div class="place">'+a.place+capTxt+'</div></div><div class="cnt"><div class="c">'+a.members.length+'</div><div class="cl">人が参加予定</div></div></div>'+youTxt+'<div class="actions">'+(joined?'<button class="btn btn-cancel" data-act="'+a.id+'">やっぱり行けない</button>':'<button class="btn btn-go" data-act="'+a.id+'">この日に行く</button>')+'</div></div>';
+      return '<div class="act'+(joined?' mine':'')+'"><div class="ah"><div class="ai"><span class="kind '+kc+'">'+a.label+'</span><div class="date">'+a.date+'</div><div class="place">'+a.place+capTxt+'</div>'+taskTxt+'</div><div class="cnt"><div class="c">'+a.members.length+'</div><div class="cl">人が参加予定</div></div></div>'+youTxt+'<div class="actions">'+(joined?'<button class="btn btn-cancel" data-act="'+a.id+'">やっぱり行けない</button>':'<button class="btn btn-go" data-act="'+a.id+'">この日に行く</button>')+'</div></div>';
     }).join('');
 
     $('acts').querySelectorAll('button[data-act]').forEach(function(b){
