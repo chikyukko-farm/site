@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>リッチメニュー確認 ── ちきゅうっ子ファーム</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{ --bg:#1b1b1d; --panel:#26262a; --ink:#f2efe8; --muted:#9b968c; --line:#3a3a40; --accent:#e8a800; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Zen Kaku Gothic New',sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;padding:22px 16px 60px}
+  .wrap{max-width:1000px;margin:0 auto}
+  h1{font-size:18px;font-weight:900;margin-bottom:4px}
+  .sub{font-size:12.5px;color:var(--muted);margin-bottom:20px}
+  .cols{display:grid;grid-template-columns:minmax(300px,380px) 1fr;gap:26px;align-items:start}
+  @media(max-width:760px){.cols{grid-template-columns:1fr}}
+
+  .phone{background:#000;border-radius:26px;padding:8px;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+  .screen{background:#111;border-radius:20px;overflow:hidden}
+  .bar{display:flex;align-items:center;gap:8px;padding:11px 13px;background:#1c1c1e;font-size:13px;font-weight:700;border-bottom:1px solid #2a2a2e}
+  .bar .dot{width:22px;height:22px;border-radius:50%;background:#e8a800;flex:0 0 auto}
+  .chat{height:150px;background:#111;padding:12px;display:flex;flex-direction:column;justify-content:flex-end;gap:7px}
+  .msg{background:#2a2a2e;border-radius:12px;padding:8px 11px;font-size:11.5px;color:#ddd;max-width:80%}
+  .menu{position:relative;line-height:0}
+  .menu img{width:100%;display:block}
+  .menu a{position:absolute;display:block;text-decoration:none}
+  .menu a .box{position:absolute;inset:0;border:2px solid transparent;border-radius:3px;transition:.12s}
+  .menu.show a .box{border-color:rgba(232,168,0,.85);background:rgba(232,168,0,.13)}
+  .menu a:hover .box{border-color:#e8a800;background:rgba(232,168,0,.3)}
+  .menu a .num{position:absolute;top:6px;left:6px;width:20px;height:20px;border-radius:50%;background:#e8a800;color:#1b1b1d;
+    font-size:11px;font-weight:900;display:none;align-items:center;justify-content:center;line-height:1}
+  .menu.show a .num{display:flex}
+  .chatbar{background:#1c1c1e;padding:11px;text-align:center;font-size:13px;color:#ddd;border-top:1px solid #2a2a2e}
+
+  .ctrl{margin:14px 0 0;display:flex;gap:10px;flex-wrap:wrap}
+  .ctrl button{font-family:inherit;font-size:12.5px;font-weight:700;color:var(--ink);background:var(--panel);
+    border:1px solid var(--line);border-radius:8px;padding:8px 14px;cursor:pointer}
+  .ctrl button.on{background:var(--accent);color:#1b1b1d;border-color:var(--accent)}
+
+  .list{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .list .lh{padding:12px 16px;font-size:13.5px;font-weight:700;border-bottom:1px solid var(--line)}
+  .row{display:flex;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line);align-items:flex-start}
+  .row:last-child{border-bottom:none}
+  .row.hi{background:rgba(232,168,0,.09)}
+  .row .n{flex:0 0 22px;height:22px;border-radius:50%;background:#3a3a40;color:var(--ink);font-size:11px;font-weight:900;
+    display:flex;align-items:center;justify-content:center;line-height:1;margin-top:2px}
+  .row.hi .n{background:var(--accent);color:#1b1b1d}
+  .row .t{font-size:13.5px;font-weight:700}
+  .row .u{font-size:11px;color:var(--muted);word-break:break-all;margin-top:2px}
+  .row .u a{color:#7fb2e0}
+  .row .tag{display:inline-block;font-size:10px;font-weight:700;color:var(--accent);border:1px solid var(--accent);
+    border-radius:20px;padding:0 8px;margin-left:7px;vertical-align:1px}
+  .note{font-size:12px;color:var(--muted);margin-top:16px;background:var(--panel);border:1px solid var(--line);
+    border-radius:10px;padding:13px 15px;line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>リッチメニュー 確認ページ</h1>
+  <div class="sub">実際に配信する前に、見た目とタップ範囲とリンク先を確認するためのページです。ここはLINEではありません。</div>
+
+  <div class="cols">
+    <div>
+      <div class="phone"><div class="screen">
+        <div class="bar"><span class="dot"></span>公式/ちきゅうっ子ファーム</div>
+        <div class="chat">
+          <div class="msg">9/12 かかしづくりとランチ会です</div>
+          <div class="msg">不明点は何でも聞いてくださいね</div>
+        </div>
+        <div class="menu show" id="menu">
+          <img src="./richmenu.png" alt="リッチメニュー">
+        </div>
+        <div class="chatbar">メニュー ▾</div>
+      </div></div>
+      <div class="ctrl">
+        <button id="tgl" class="on">タップ範囲を表示</button>
+        <button id="open">全リンクを確認</button>
+      </div>
+    </div>
+
+    <div>
+      <div class="list">
+        <div class="lh">ボタンとリンク先（6か所）</div>
+        <div id="rows"></div>
+      </div>
+      <div class="note">
+        <b>確認すること</b><br>
+        ① 画像がぼやけていないか（実機で見ると分かりやすいです）<br>
+        ② オレンジの枠が、6つのボタンの絵とぴったり合っているか<br>
+        ③ ③番のスケジュールを押すと、予約ページが開くか<br>
+        ④ ①②④⑤⑥は、いままでと同じ場所に飛ぶか
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var W=2500,H=1686;
+  var A=[
+    {n:1,x:0,   y:0,  w:833,h:843,t:'みんなではたけ',      u:'https://corerelease.my.canva.site/',            ch:false},
+    {n:2,x:833, y:0,  w:834,h:843,t:'はたけと暮らし塾',    u:'https://corerelease.my.canva.site/202604',      ch:false},
+    {n:3,x:1667,y:0,  w:833,h:843,t:'スケジュール',        u:'https://chikyukko-farm.github.io/site/yoyaku/', ch:true },
+    {n:4,x:0,   y:843,w:833,h:843,t:'入会もうしこみ',      u:'https://corerelease.my.canva.site/dahrvcpvqdw', ch:false},
+    {n:5,x:833, y:843,w:834,h:843,t:'SNS',               u:'https://www.instagram.com/chikyu_5_farm/',      ch:false},
+    {n:6,x:1667,y:843,w:833,h:843,t:'みんなではたけ 体験申込',u:'https://docs.google.com/forms/d/e/1FAIpQLSdKEfuJfOxI_iMSuSvmG-1budGwusAq4wCIFj3t0i_mvBjJpQ/viewform',ch:false}
+  ];
+  var menu=document.getElementById('menu');
+  A.forEach(function(a){
+    var el=document.createElement('a');
+    el.href=a.u; el.target='_blank'; el.rel='noopener';
+    el.style.left=(a.x/W*100)+'%'; el.style.top=(a.y/H*100)+'%';
+    el.style.width=(a.w/W*100)+'%'; el.style.height=(a.h/H*100)+'%';
+    el.title=a.t+' → '+a.u;
+    el.innerHTML='<span class="box"></span><span class="num">'+a.n+'</span>';
+    menu.appendChild(el);
+  });
+  var rows=document.getElementById('rows');
+  rows.innerHTML=A.map(function(a){
+    return '<div class="row'+(a.ch?' hi':'')+'"><div class="n">'+a.n+'</div><div>'
+      +'<div class="t">'+a.t+(a.ch?'<span class="tag">ここだけ変更</span>':'')+'</div>'
+      +'<div class="u"><a href="'+a.u+'" target="_blank" rel="noopener">'+a.u+'</a></div></div></div>';
+  }).join('');
+
+  var t=document.getElementById('tgl');
+  t.addEventListener('click',function(){
+    menu.classList.toggle('show'); t.classList.toggle('on');
+  });
+  document.getElementById('open').addEventListener('click',function(){
+    A.forEach(function(a){ window.open(a.u,'_blank','noopener'); });
+  });
+})();
+</script>
+</body>
+</html>
