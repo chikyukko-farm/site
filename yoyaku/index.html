@@ -24,6 +24,7 @@
   .hero .schedlink{display:inline-block;margin-top:12px;font-size:13px;font-weight:700;color:var(--yamabuki-d);
     text-decoration:none;border-bottom:1px solid var(--yamabuki);padding-bottom:2px}
 
+  .fieldbar{background:#fff;border-bottom:1px solid var(--border);padding:12px 0;font-size:12.5px;color:var(--ink);line-height:1.7}
   .namebar{background:var(--paper2);border-bottom:1px solid var(--border);padding:14px 0}
   .namebar .in{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
   .namebar label{font-size:13px;font-weight:700;color:var(--ink);white-space:nowrap}
@@ -85,11 +86,18 @@
   </div>
 </header>
 
+<div class="fieldbar">
+  <div class="wrap">
+    <b>畑は3か所あります</b>　精明の田んぼ ／ 小岩井の山の畑 ／ 永田の畑<br>
+    その日の野菜の状態で決まります。午前と午後で変わることもあります。<b>当日ご案内します。</b>
+  </div>
+</div>
+
 <div class="namebar">
   <div class="wrap in">
     <label>お名前</label>
-    <input type="text" id="myname" placeholder="例：かとう" maxlength="20">
-    <div class="hint">最初に一度だけ入れてください。次からは覚えています。</div>
+    <input type="text" id="myname" placeholder="例：かとちん" maxlength="20">
+    <div class="hint">ニックネームでも大丈夫です。最初に一度だけ入れてください。次からは覚えています。</div>
   </div>
 </div>
 
@@ -116,7 +124,7 @@
   var NAME_KEY='yoyaku_name_v1';
   // 参加者どうしでお名前を見せるか。true にすると各活動カードに参加者名が並ぶ。
   // false のときは人数だけ（名簿は「運営の方はこちら」内のみ）。
-  var SHOW_NAMES = false;
+  var SHOW_NAMES = true;
 
   var activities=[], signups=[];
   function $(id){return document.getElementById(id);}
@@ -181,7 +189,7 @@
       }
       return '<div class="act '+kc+(joined?' mine':'')+'">'
         +'<div class="ah"><div><span class="kind">'+esc(a.label||'活動')+'</span>'
-          +'<div class="date">'+esc(a.date)+'</div><div class="place">'+esc(a.place||'')+capTxt+'</div>'+taskTxt+'</div>'
+          +'<div class="date">'+esc(a.date)+'</div><div class="place">'+(a.place?esc(a.place):'場所は当日ご案内します')+capTxt+'</div>'+taskTxt+'</div>'
           +'<div class="cnt"><div class="c">'+cnt+'</div><div class="cl">人が参加予定</div></div></div>'
         +memTxt+youTxt
         +'<div class="actions">'+(joined
