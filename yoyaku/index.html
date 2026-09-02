@@ -102,7 +102,7 @@
     <details class="admin">
       <summary>運営の方はこちら（参加者の名簿）</summary>
       <div id="admin-rows" style="margin-top:12px"></div>
-      <div class="adminnote">お名前は運営だけが見られます。参加するみなさんには「人数」だけが表示されます。</div>
+      <div class="adminnote" id="adminnote"></div>
     </details>
   </section>
 </div>
@@ -114,6 +114,9 @@
   // GASウェブアプリのURL（セットアップ後にここへ貼る）
   var GAS_URL='https://script.google.com/macros/s/AKfycbyroR9u94e6MU_rjxVxfL9Nk5g35olbe0X972Rr_hxAzBQwCPxiivlGNycWyxm30E3RWQ/exec';
   var NAME_KEY='yoyaku_name_v1';
+  // 参加者どうしでお名前を見せるか。true にすると各活動カードに参加者名が並ぶ。
+  // false のときは人数だけ（名簿は「運営の方はこちら」内のみ）。
+  var SHOW_NAMES = false;
 
   var activities=[], signups=[];
   function $(id){return document.getElementById(id);}
@@ -171,11 +174,16 @@
       var capTxt=a.cap?('　/ 定員'+a.cap):'';
       var taskTxt=a.task?'<div class="task"><b>内容</b>'+esc(a.task)+'</div>':'';
       var youTxt=joined?'<div class="youtag">✓ あなたは参加予定です</div>':'';
+      var memTxt='';
+      if(SHOW_NAMES){
+        var ns=namesFor(a.id);
+        if(ns.length) memTxt='<div class="task"><b>参加予定</b>'+ns.map(esc).join('、')+'</div>';
+      }
       return '<div class="act '+kc+(joined?' mine':'')+'">'
         +'<div class="ah"><div><span class="kind">'+esc(a.label||'活動')+'</span>'
           +'<div class="date">'+esc(a.date)+'</div><div class="place">'+esc(a.place||'')+capTxt+'</div>'+taskTxt+'</div>'
           +'<div class="cnt"><div class="c">'+cnt+'</div><div class="cl">人が参加予定</div></div></div>'
-        +youTxt
+        +memTxt+youTxt
         +'<div class="actions">'+(joined
           ?'<button class="btn btn-cancel" data-cancel="'+a.id+'">やっぱり行けない</button>'
           :'<button class="btn btn-go" data-go="'+a.id+'">この日に行く</button>')+'</div>'
@@ -197,6 +205,10 @@
       b.addEventListener('click',function(){ cancel(b.getAttribute('data-cancel')); });
     });
   }
+
+  $('adminnote').textContent = SHOW_NAMES
+    ? '参加するみなさんにも、参加予定の方のお名前が表示されています。'
+    : 'お名前は運営だけが見られます。参加するみなさんには「人数」だけが表示されます。';
 
   load();
 })();
