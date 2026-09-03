@@ -117,12 +117,6 @@
     <div class="today" id="today"></div>
     <div id="acts"></div>
     <div class="status" id="status"></div>
-
-    <details class="admin">
-      <summary>運営の方はこちら（参加者の名簿）</summary>
-      <div id="admin-rows" style="margin-top:12px"></div>
-      <div class="adminnote" id="adminnote"></div>
-    </details>
   </section>
 </div>
 
@@ -210,14 +204,6 @@
       +'</div>';
     }).join('');
 
-    // 運営ビュー（名簿）
-    $('admin-rows').innerHTML=activities.map(function(a){
-      var names=namesFor(a.id);
-      var nameStr=names.length?names.map(esc).join('、'):'（まだいません）';
-      return '<div class="arow"><div><span>'+esc(a.date)+'</span> <span style="opacity:.6;font-size:12px">'+esc(a.label||'')+'</span>'
-        +'<div class="names">'+nameStr+'</div></div><span>'+names.length+' 人</span></div>';
-    }).join('');
-
     $('acts').querySelectorAll('button[data-go]').forEach(function(b){
       b.addEventListener('click',function(){ signup(b.getAttribute('data-go')); });
     });
@@ -225,10 +211,6 @@
       b.addEventListener('click',function(){ cancel(b.getAttribute('data-cancel')); });
     });
   }
-
-  $('adminnote').textContent = SHOW_NAMES
-    ? '参加するみなさんにも、参加予定の方のお名前が表示されています。'
-    : 'お名前は運営だけが見られます。参加するみなさんには「人数」だけが表示されます。';
 
   // ── 起動：LINEのアカウントで本人を特定する ──
   function showMe(){
