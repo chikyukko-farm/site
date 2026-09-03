@@ -6,6 +6,7 @@
 <title>今日の畑、行く？ ── ちきゅうっ子ファーム</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -30,7 +31,12 @@
   .namebar label{font-size:13px;font-weight:700;color:var(--ink);white-space:nowrap}
   .namebar input{flex:1;min-width:140px;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:15px;font-family:'Zen Kaku Gothic New';background:#fff;color:var(--sumi)}
   .namebar input:focus{outline:none;border-color:var(--yamabuki)}
-  .namebar .hint{font-size:11px;color:var(--muted);width:100%}
+  .namebar .hint{font-size:11px;color:var(--muted)}
+  .namebar img{border-radius:50%;flex:0 0 auto;background:var(--border)}
+  .namebar #mename{font-size:15px;font-weight:700}
+  .guestbox{background:#fff;border:1px solid var(--yamabuki);border-radius:10px;padding:13px 15px;margin:16px 0 0;font-size:12.8px;line-height:1.8;color:var(--ink)}
+  .guestbox a{display:inline-block;margin-top:6px;color:var(--yamabuki-d);font-weight:700}
+  .loading{padding:40px 0;text-align:center;color:var(--muted);font-size:13px}
 
   section{padding:22px 0}
   .today{background:var(--sumi);color:#fff;border-radius:14px;padding:20px 22px;margin-bottom:20px}
@@ -93,13 +99,18 @@
   </div>
 </div>
 
-<div class="namebar">
+<div class="namebar" id="mebar" hidden>
   <div class="wrap in">
-    <label>お名前</label>
-    <input type="text" id="myname" placeholder="例：かとちん" maxlength="20">
-    <div class="hint">ニックネームでも大丈夫です。最初に一度だけ入れてください。次からは覚えています。</div>
+    <img id="mepic" alt="" width="34" height="34">
+    <div><div id="mename">　</div><div class="hint" id="mehint">LINEのアカウントで参加を記録します。お名前の入力は要りません。</div></div>
   </div>
 </div>
+
+<div class="wrap"><div class="guestbox" id="guestbox" hidden>
+  <b>はじめての方へ</b><br>
+  ご参加には、事前に体験のお申し込み（保険・当日のご案内のため）をお願いしています。<br>
+  <a id="guestlink" href="https://docs.google.com/forms/d/e/1FAIpQLSdKEfuJfOxI_iMSuSvmG-1budGwusAq4wCIFj3t0i_mvBjJpQ/viewform" target="_blank" rel="noopener">体験のお申し込みはこちら →</a>
+</div></div>
 
 <div class="wrap">
   <section>
@@ -121,7 +132,8 @@
 (function(){
   // GASウェブアプリのURL（セットアップ後にここへ貼る）
   var GAS_URL='https://script.google.com/macros/s/AKfycbyroR9u94e6MU_rjxVxfL9Nk5g35olbe0X972Rr_hxAzBQwCPxiivlGNycWyxm30E3RWQ/exec';
-  var NAME_KEY='yoyaku_name_v1';
+  // LIFFアプリのID（LINE Developers Console で発行したものを貼る）
+  var LIFF_ID='2011402522-AcflxZaL';
   // 参加者どうしでお名前を見せるか。true にすると各活動カードに参加者名が並ぶ。
   // false のときは人数だけ（名簿は「運営の方はこちら」内のみ）。
   var SHOW_NAMES = true;
@@ -129,26 +141,25 @@
   var activities=[], signups=[];
   function $(id){return document.getElementById(id);}
   function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
-  function getName(){try{return localStorage.getItem(NAME_KEY)||'';}catch(e){return '';}}
   function setStatus(t){$('status').textContent=t||'';}
 
-  var nameInput=$('myname');
-  nameInput.value=getName();
-  nameInput.addEventListener('input',function(){try{localStorage.setItem(NAME_KEY,nameInput.value.trim());}catch(e){}});
-  function myName(){return nameInput.value.trim();}
-  function needName(){ if(!myName()){ nameInput.focus(); nameInput.style.borderColor='var(--clay)'; setTimeout(function(){nameInput.style.borderColor='';},900); return true;} return false; }
+  var ME=null;           // {userId, displayName, pictureUrl}
+  var IS_MEMBER=false;
 
   // 予約人数を数える
   function countFor(actId){ return signups.filter(function(s){return s.activity_id==actId;}).length; }
-  function joinedBy(actId,name){ return signups.some(function(s){return s.activity_id==actId && s.name==name;}); }
+  function joinedBy(actId){ return !!(ME && signups.some(function(s){return s.activity_id==actId && String(s.user_id)===String(ME.userId);})); }
   function namesFor(actId){ return signups.filter(function(s){return s.activity_id==actId;}).map(function(s){return s.name;}); }
 
   function load(){
     if(!GAS_URL){ setStatus('準備中：GASのURLが設定されていません'); return; }
     setStatus('読み込み中…');
-    fetch(GAS_URL).then(function(r){return r.json();}).then(function(d){
+    var u=GAS_URL+(ME?('?user_id='+encodeURIComponent(ME.userId)):'');
+    fetch(u).then(function(r){return r.json();}).then(function(d){
       if(!d.ok) throw new Error(d.error||'読み込み失敗');
       activities=d.activities||[]; signups=d.signups||[];
+      if(d.me) IS_MEMBER=!!d.me.is_member;
+      $('guestbox').hidden = !(ME && !IS_MEMBER);
       setStatus(''); render();
     }).catch(function(e){ setStatus('読み込みエラー：'+e.message); });
   }
@@ -161,11 +172,12 @@
       .catch(function(e){ setStatus('更新エラー：'+e.message); throw e; });
   }
 
-  function signup(actId){ if(needName())return; post({action:'signup',activity_id:actId,name:myName()}).then(load); }
-  function cancel(actId){ post({action:'cancel',activity_id:actId,name:myName()}).then(load); }
+  function signup(actId){ if(!ME){setStatus('LINEの情報を取得できていません');return;}
+    post({action:'signup',activity_id:actId,user_id:ME.userId,name:ME.displayName}).then(load); }
+  function cancel(actId){ if(!ME)return;
+    post({action:'cancel',activity_id:actId,user_id:ME.userId}).then(load); }
 
   function render(){
-    var name=myName();
     // 一番近い活動（配列の先頭）
     if(activities.length){
       var t=activities[0], tc=countFor(t.id);
@@ -178,7 +190,7 @@
 
     $('acts').innerHTML=activities.map(function(a){
       var kc=a.kind==='school'?'k-school':(a.kind==='extra'?'k-extra':'k-farm');
-      var cnt=countFor(a.id), joined=name&&joinedBy(a.id,name);
+      var cnt=countFor(a.id), joined=joinedBy(a.id);
       var capTxt=a.cap?('　/ 定員'+a.cap):'';
       var taskTxt=a.task?'<div class="task"><b>内容</b>'+esc(a.task)+'</div>':'';
       var youTxt=joined?'<div class="youtag">✓ あなたは参加予定です</div>':'';
@@ -218,7 +230,26 @@
     ? '参加するみなさんにも、参加予定の方のお名前が表示されています。'
     : 'お名前は運営だけが見られます。参加するみなさんには「人数」だけが表示されます。';
 
-  load();
+  // ── 起動：LINEのアカウントで本人を特定する ──
+  function showMe(){
+    $('mepic').src = ME.pictureUrl || '';
+    $('mename').textContent = ME.displayName + ' さん';
+    $('mebar').hidden = false;
+  }
+  function boot(){
+    if(!LIFF_ID){ setStatus('準備中：LIFF IDが設定されていません'); return; }
+    setStatus('LINEの情報を確認中…');
+    liff.init({ liffId: LIFF_ID }).then(function(){
+      if(!liff.isLoggedIn()){ liff.login(); return; }
+      return liff.getProfile().then(function(p){
+        ME = { userId:p.userId, displayName:p.displayName, pictureUrl:p.pictureUrl };
+        showMe(); load();
+      });
+    }).catch(function(e){
+      setStatus('LINEの情報を取得できませんでした（'+(e && e.message ? e.message : e)+'）。LINEアプリから開いてください。');
+    });
+  }
+  boot();
 })();
 </script>
 
