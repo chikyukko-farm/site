@@ -69,15 +69,6 @@
 
   .status{text-align:center;font-size:12px;color:var(--muted);padding:10px}
 
-  .admin{margin-top:26px;border-top:1px dashed var(--border);padding-top:18px}
-  .admin summary{cursor:pointer;font-size:13px;color:var(--muted);font-family:'Zen Old Mincho',serif;list-style:none}
-  .admin summary::-webkit-details-marker{display:none}
-  .admin summary::before{content:"▸ ";color:var(--yamabuki-d)}
-  .admin[open] summary::before{content:"▾ "}
-  .arow{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px}
-  .arow .names{font-size:11.5px;color:var(--muted);margin-top:3px}
-  .adminnote{font-size:11px;color:var(--muted);margin-top:10px;background:var(--paper2);border-radius:8px;padding:10px 12px}
-
   footer{background:var(--sumi);color:var(--paper2);text-align:center;padding:22px;font-size:11px;letter-spacing:.1em;font-family:'Zen Old Mincho',serif;margin-top:24px}
   @media(max-width:600px){.hero h1{font-size:21px}}
 </style>
@@ -129,7 +120,7 @@
   // LIFFアプリのID（LINE Developers Console で発行したものを貼る）
   var LIFF_ID='2011402522-AcflxZaL';
   // 参加者どうしでお名前を見せるか。true にすると各活動カードに参加者名が並ぶ。
-  // false のときは人数だけ（名簿は「運営の方はこちら」内のみ）。
+  // false のときは人数だけを表示します。
   var SHOW_NAMES = true;
 
   var activities=[], signups=[];
