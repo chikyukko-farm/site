@@ -90,6 +90,9 @@
   .youtag{font-size:12px;font-weight:700;color:var(--leaf-d);margin-top:11px}
   .act.next .youtag{color:var(--yamabuki-l)}
 
+  .more{width:100%;background:#fff;border:1px solid var(--border);border-radius:10px;padding:12px;
+        font-family:'Zen Kaku Gothic New';font-size:13px;font-weight:700;color:var(--ink);cursor:pointer;margin-top:2px}
+  .more:active{background:var(--paper2)}
   .status{text-align:center;font-size:12px;color:var(--muted);padding:12px}
   .empty{background:#fff;border:1px dashed var(--border);border-radius:12px;padding:26px 16px;
          text-align:center;font-size:13px;color:var(--muted)}
@@ -218,6 +221,7 @@
 
   var activities=[], signups=[];
   var ME=null, IS_MEMBER=false, IS_ADMIN=false;
+  var SHOW_FIRST=3, SHOW_ALL=false;   // 最初は3日分だけ出す
 
   function $(id){return document.getElementById(id);}
   function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){
@@ -290,10 +294,19 @@
       $('restwrap').innerHTML='';
     } else {
       $('nextwrap').innerHTML='<div class="sect">つぎの活動日</div>'+cardHtml(list[0],true);
-      $('restwrap').innerHTML = list.length>1
-        ? '<div class="sect">そのあとの予定</div>'+list.slice(1).map(function(a){return cardHtml(a,false);}).join('')
-        : '';
+      var rest=list.slice(1);
+      if(!rest.length){ $('restwrap').innerHTML=''; }
+      else {
+        var shown = SHOW_ALL ? rest : rest.slice(0,SHOW_FIRST);
+        var hidden = rest.length - shown.length;
+        $('restwrap').innerHTML='<div class="sect">そのあとの予定</div>'
+          + shown.map(function(a){return cardHtml(a,false);}).join('')
+          + (hidden>0 ? '<button class="more" id="moreBtn">これ以降の予定も見る（あと'+hidden+'日）</button>' : '');
+      }
     }
+
+    var mb=$('moreBtn');
+    if(mb) mb.addEventListener('click',function(){ SHOW_ALL=true; render(); });
 
     document.querySelectorAll('button[data-go]').forEach(function(b){
       b.addEventListener('click',function(){ signup(b.getAttribute('data-go')); }); });
