@@ -11,66 +11,120 @@
 <style>
   :root{
     --sumi:#2b2722; --paper:#fbf7ee; --paper2:#f3ecdb;
-    --yamabuki:#e8a800; --yamabuki-d:#c98a00; --yamabuki-l:#fce9b8;
+    --yamabuki:#e8a800; --yamabuki-d:#b07d00; --yamabuki-l:#fce9b8;
     --leaf:#5c7148; --leaf-d:#3f5232; --clay:#bf6b3f; --gold:#c9a14a;
-    --ink:#3f3a33; --muted:#928a7b; --border:#e0d6bf;
+    --ink:#3f3a33; --muted:#8d8474; --border:#e3dac5;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Zen Kaku Gothic New',sans-serif;background:var(--paper);color:var(--sumi);line-height:1.8;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:560px;margin:0 auto;padding:0 18px}
+  body{font-family:'Zen Kaku Gothic New',sans-serif;background:var(--paper);color:var(--sumi);
+       line-height:1.75;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:560px;margin:0 auto;padding:0 16px}
 
-  .hero{background:linear-gradient(155deg,#fff5d6,#f3ecdb);border-bottom:3px solid var(--yamabuki);padding:30px 0 24px}
-  .hero h1{font-family:'Zen Old Mincho',serif;font-weight:900;font-size:24px;line-height:1.4}
-  .hero .lead{font-size:13px;color:var(--ink);margin-top:8px}
-  .hero .schedlink{display:inline-block;margin-top:12px;font-size:13px;font-weight:700;color:var(--yamabuki-d);
-    text-decoration:none;border-bottom:1px solid var(--yamabuki);padding-bottom:2px}
+  /* ── 見出し ── */
+  .hero{background:linear-gradient(155deg,#fff6d9,#f3ecdb);border-bottom:3px solid var(--yamabuki);padding:22px 0 18px}
+  .hero h1{font-family:'Zen Old Mincho',serif;font-weight:900;font-size:22px;line-height:1.35}
+  .hero p{font-size:12.5px;color:var(--ink);margin-top:5px}
 
-  .fieldbar{background:#fff;border-bottom:1px solid var(--border);padding:12px 0;font-size:12.5px;color:var(--ink);line-height:1.7}
-  .namebar{background:var(--paper2);border-bottom:1px solid var(--border);padding:14px 0}
-  .namebar .in{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-  .namebar label{font-size:13px;font-weight:700;color:var(--ink);white-space:nowrap}
-  .namebar input{flex:1;min-width:140px;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-size:15px;font-family:'Zen Kaku Gothic New';background:#fff;color:var(--sumi)}
-  .namebar input:focus{outline:none;border-color:var(--yamabuki)}
-  .namebar .hint{font-size:11px;color:var(--muted)}
-  .namebar img{border-radius:50%;flex:0 0 auto;background:var(--border)}
-  .namebar #mename{font-size:15px;font-weight:700}
-  .guestbox{background:#fff;border:1px solid var(--yamabuki);border-radius:10px;padding:13px 15px;margin:16px 0 0;font-size:12.8px;line-height:1.8;color:var(--ink)}
-  .guestbox a{display:inline-block;margin-top:6px;color:var(--yamabuki-d);font-weight:700}
-  .loading{padding:40px 0;text-align:center;color:var(--muted);font-size:13px}
+  /* ── あなた ── */
+  .mebar{background:#fff;border-bottom:1px solid var(--border);padding:9px 0}
+  .mebar .in{display:flex;align-items:center;gap:9px}
+  .mebar img{border-radius:50%;flex:0 0 auto;background:var(--border)}
+  .mebar .nm{font-size:13.5px;font-weight:700}
+  .mebar .hint{font-size:10.5px;color:var(--muted);line-height:1.5}
 
-  section{padding:22px 0}
-  .today{background:var(--sumi);color:#fff;border-radius:14px;padding:20px 22px;margin-bottom:20px}
-  .today .lbl{font-size:11px;color:var(--yamabuki-l);letter-spacing:.15em;margin-bottom:6px}
-  .today .big{display:flex;align-items:baseline;gap:8px}
-  .today .big .n{font-family:'Zen Old Mincho',serif;font-size:38px;font-weight:900;color:var(--yamabuki)}
-  .today .big .u{font-size:14px}
-  .today .dt{font-size:13px;color:#d8cfc0;margin-top:6px}
+  /* ── はじめての方へ ── */
+  .guestbox{background:#fff;border:1px solid var(--yamabuki);border-radius:10px;
+            padding:12px 14px;margin:16px 0 0;font-size:12.5px;line-height:1.75;color:var(--ink)}
+  .guestbox b{font-size:13px}
+  .guestbox a{display:inline-block;margin-top:5px;color:var(--yamabuki-d);font-weight:700}
 
-  .act{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:12px;border-left:4px solid var(--leaf)}
+  /* ── 区切りの見出し ── */
+  .sect{font-family:'Zen Old Mincho',serif;font-size:13px;font-weight:700;color:var(--muted);
+        letter-spacing:.1em;margin:26px 0 10px;display:flex;align-items:center;gap:10px}
+  .sect::after{content:'';flex:1;height:1px;background:var(--border)}
+
+  /* ── 活動カード ── */
+  .act{background:#fff;border:1px solid var(--border);border-radius:14px;padding:15px 16px 14px;margin-bottom:11px;
+       border-left:4px solid var(--leaf)}
   .act.k-school{border-left-color:var(--clay)}
   .act.k-extra{border-left-color:#a8893c}
-  .act.mine{background:#fffdf5;border-color:var(--yamabuki)}
-  .act .ah{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-  .act .kind{display:inline-block;font-size:11px;font-weight:700;color:#fff;background:var(--leaf);border-radius:20px;padding:2px 11px;margin-bottom:6px}
-  .act.k-school .kind{background:var(--clay)} .act.k-extra .kind{background:#a8893c}
-  .act .date{font-family:'Zen Old Mincho',serif;font-size:17px;font-weight:700}
-  .act .place{font-size:12.5px;color:var(--muted);margin-top:2px}
-  .act .task{margin-top:8px;font-size:13px;color:var(--ink);background:var(--paper2);border-radius:7px;padding:6px 11px;display:inline-block}
-  .act .task b{color:var(--clay);margin-right:5px}
-  .act .cnt{text-align:center;flex-shrink:0}
-  .act .cnt .c{font-family:'Zen Old Mincho',serif;font-size:26px;font-weight:900;color:var(--yamabuki-d)}
-  .act .cnt .cl{font-size:10.5px;color:var(--muted)}
-  .act .youtag{margin-top:10px;font-size:12px;color:var(--leaf-d);font-weight:700}
-  .act .actions{margin-top:12px}
-  .btn{width:100%;border:none;border-radius:9px;padding:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Zen Kaku Gothic New'}
-  .btn-go{background:var(--yamabuki);color:#fff}
-  .btn-go:active{background:var(--yamabuki-d)}
-  .btn-cancel{background:#fff;color:var(--muted);border:1px solid var(--border)}
+  .act.mine{background:#fffdf3;border-color:var(--yamabuki);border-left-color:var(--yamabuki)}
 
-  .status{text-align:center;font-size:12px;color:var(--muted);padding:10px}
+  /* 一番近い日だけ濃く */
+  .act.next{background:var(--sumi);border-color:var(--sumi);color:#fff;padding:18px 18px 16px;border-radius:16px}
+  .act.next .date{color:#fff}
+  .act.next .place,.act.next .rain{color:#b8ae9c}
+  .act.next .li{background:rgba(255,255,255,.07)}
+  .act.next .li .v{color:#f4efe4}
+  .act.next .cnt .c{color:var(--yamabuki)}
+  .act.next .cnt .cl{color:#b8ae9c}
+  .act.next .names{color:#c9c0ae;border-top-color:#4a443c}
 
-  footer{background:var(--sumi);color:var(--paper2);text-align:center;padding:22px;font-size:11px;letter-spacing:.1em;font-family:'Zen Old Mincho',serif;margin-top:24px}
-  @media(max-width:600px){.hero h1{font-size:21px}}
+  .ah{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+  .kind{display:inline-block;font-size:10.5px;font-weight:700;color:#fff;background:var(--leaf);
+        border-radius:20px;padding:1px 10px;margin-bottom:5px}
+  .k-school .kind{background:var(--clay)} .k-extra .kind{background:#a8893c}
+  .act.next .kind{background:var(--yamabuki);color:var(--sumi)}
+  .date{font-family:'Zen Old Mincho',serif;font-size:20px;font-weight:900;line-height:1.25}
+  .act.next .date{font-size:25px}
+  .place{font-size:11.5px;color:var(--muted);margin-top:3px}
+  .cnt{text-align:center;flex:0 0 auto;min-width:58px}
+  .cnt .c{font-family:'Zen Old Mincho',serif;font-size:30px;font-weight:900;color:var(--yamabuki-d);line-height:1}
+  .cnt .cl{font-size:10px;color:var(--muted);margin-top:3px}
+
+  .li{display:flex;gap:8px;align-items:baseline;background:var(--paper2);border-radius:8px;
+      padding:6px 10px;margin-top:7px;font-size:12.5px}
+  .li .k{flex:0 0 auto;font-size:10.5px;font-weight:700;color:var(--clay);white-space:nowrap;
+         border-right:1px solid rgba(0,0,0,.12);padding-right:8px}
+  .act.next .li .k{color:var(--yamabuki);border-right-color:rgba(255,255,255,.2)}
+  .li .v{color:var(--ink);line-height:1.6}
+  .rain{font-size:11px;color:var(--muted);margin-top:6px}
+  .names{font-size:11.5px;color:var(--muted);margin-top:9px;padding-top:8px;border-top:1px dashed var(--border);line-height:1.6}
+
+  .btn{width:100%;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:700;
+       cursor:pointer;font-family:'Zen Kaku Gothic New';margin-top:12px}
+  .btn-go{background:var(--yamabuki);color:#fff;box-shadow:0 2px 0 var(--yamabuki-d)}
+  .btn-go:active{background:var(--yamabuki-d);box-shadow:none;transform:translateY(2px)}
+  .btn-cancel{background:transparent;color:var(--muted);border:1px solid var(--border)}
+  .act.next .btn-cancel{color:#b8ae9c;border-color:#4a443c}
+  .youtag{font-size:12px;font-weight:700;color:var(--leaf-d);margin-top:11px}
+  .act.next .youtag{color:var(--yamabuki-l)}
+
+  .status{text-align:center;font-size:12px;color:var(--muted);padding:12px}
+  .empty{background:#fff;border:1px dashed var(--border);border-radius:12px;padding:26px 16px;
+         text-align:center;font-size:13px;color:var(--muted)}
+
+  /* ── 下の補足 ── */
+  details.info{background:#fff;border:1px solid var(--border);border-radius:10px;margin-top:12px;overflow:hidden}
+  details.info>summary{padding:12px 14px;font-size:13px;font-weight:700;cursor:pointer;list-style:none}
+  details.info>summary::-webkit-details-marker{display:none}
+  details.info>summary::after{content:'＋';float:right;color:var(--muted);font-weight:400}
+  details.info[open]>summary::after{content:'−'}
+  details.info .body{padding:0 14px 14px;font-size:12.5px;color:var(--ink);line-height:1.85;border-top:1px solid var(--border);padding-top:12px}
+  .schedlink{display:block;text-align:center;margin-top:14px;font-size:13px;font-weight:700;
+             color:var(--yamabuki-d);text-decoration:none}
+
+  /* ── 運営の追加フォーム ── */
+  details.admin{background:#fff;border:1px solid var(--leaf);border-radius:10px;margin-top:20px;overflow:hidden}
+  details.admin>summary{padding:12px 14px;font-size:13px;font-weight:700;color:var(--leaf-d);cursor:pointer;list-style:none}
+  details.admin>summary::-webkit-details-marker{display:none}
+  details.admin .body{padding:14px;border-top:1px solid var(--border)}
+  .f{margin-bottom:11px}
+  .f label{display:block;font-size:11.5px;font-weight:700;color:var(--ink);margin-bottom:3px}
+  .f input,.f select,.f textarea{width:100%;border:1px solid var(--border);border-radius:8px;padding:9px 11px;
+    font-size:15px;font-family:'Zen Kaku Gothic New';background:#fff;color:var(--sumi)}
+  .f textarea{min-height:64px;line-height:1.6}
+  .f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:var(--yamabuki)}
+  .f .note{font-size:10.5px;color:var(--muted);margin-top:3px;line-height:1.5}
+  .btn-add{background:var(--leaf-d);color:#fff;box-shadow:0 2px 0 #2c3a23}
+  .btn-add:active{transform:translateY(2px);box-shadow:none}
+  .adm{margin-top:10px;text-align:right}
+  .adm button{background:none;border:none;font-family:inherit;font-size:11px;color:var(--muted);
+              text-decoration:underline;cursor:pointer;padding:2px 4px}
+  .adm button.arm{color:#b5503f;font-weight:700}
+
+  footer{background:var(--sumi);color:var(--paper2);text-align:center;padding:20px;font-size:10.5px;
+         letter-spacing:.1em;font-family:'Zen Old Mincho',serif;margin-top:28px}
 </style>
 </head>
 <body>
@@ -78,73 +132,190 @@
 <header class="hero">
   <div class="wrap">
     <h1>今日の畑、行く？🌱</h1>
-    <p class="lead">行ける日を選んで「行く」を押すだけ。今、何人集まっているかがすぐ分かります。</p>
-    <a class="schedlink" href="https://corerelease.my.canva.site/dahjtmj6syu">年間スケジュールを見る →</a>
+    <p>行ける日の「行く」を押すだけ。今、何人集まっているかがすぐ分かります。</p>
   </div>
 </header>
 
-<div class="fieldbar">
-  <div class="wrap">
-    <b>畑は3か所あります</b>　精明の田んぼ ／ 小岩井の山の畑 ／ 永田の畑<br>
-    その日の野菜の状態で決まります。午前と午後で変わることもあります。<b>当日ご案内します。</b>
-  </div>
-</div>
-
-<div class="namebar" id="mebar" hidden>
+<div class="mebar" id="mebar" hidden>
   <div class="wrap in">
-    <img id="mepic" alt="" width="34" height="34">
-    <div><div id="mename">　</div><div class="hint" id="mehint">LINEのアカウントで参加を記録します。お名前の入力は要りません。</div></div>
+    <img id="mepic" alt="" width="30" height="30">
+    <div>
+      <div class="nm" id="mename">　</div>
+      <div class="hint">LINEのアカウントで記録します。お名前の入力は要りません。</div>
+    </div>
   </div>
 </div>
-
-<div class="wrap"><div class="guestbox" id="guestbox" hidden>
-  <b>はじめての方へ</b><br>
-  ご参加には、事前に体験のお申し込み（保険・当日のご案内のため）をお願いしています。<br>
-  <a id="guestlink" href="https://docs.google.com/forms/d/e/1FAIpQLSdKEfuJfOxI_iMSuSvmG-1budGwusAq4wCIFj3t0i_mvBjJpQ/viewform" target="_blank" rel="noopener">体験のお申し込みはこちら →</a>
-</div></div>
 
 <div class="wrap">
-  <section>
-    <div class="today" id="today"></div>
-    <div id="acts"></div>
-    <div class="status" id="status"></div>
-  </section>
+
+  <div class="guestbox" id="guestbox" hidden>
+    <b>はじめての方へ</b><br>
+    ご参加には、事前に体験のお申し込み（当日の案内及び保険の確認のため）をお願いしています。<br>
+    <a id="guestlink" href="https://docs.google.com/forms/d/e/1FAIpQLSdKEfuJfOxI_iMSuSvmG-1budGwusAq4wCIFj3t0i_mvBjJpQ/viewform" target="_blank" rel="noopener">体験のお申し込みはこちら →</a>
+  </div>
+
+  <div id="nextwrap"></div>
+  <div id="restwrap"></div>
+  <div class="status" id="status"></div>
+
+  <details class="info">
+    <summary>畑の場所について</summary>
+    <div class="body">
+      畑は3か所あります。<b>精明の田んぼ ／ 小岩井の山の畑 ／ 永田の畑</b><br>
+      その日の野菜の状態で決まります。午前と午後で変わることもあります。<b>当日ご案内します。</b>
+    </div>
+  </details>
+
+  <a class="schedlink" href="https://corerelease.my.canva.site/dahjtmj6syu" target="_blank" rel="noopener">年間スケジュールを見る →</a>
+
+  <details class="admin" id="adminbox" hidden>
+    <summary>＋ 活動日を追加する（運営）</summary>
+    <div class="body">
+      <div class="f">
+        <label>日にち</label>
+        <input type="date" id="f_date">
+        <div class="note">カレンダーから選んでください。「9月20日(土)」の形に自動で直します。</div>
+      </div>
+      <div class="f">
+        <label>種類</label>
+        <select id="f_kind">
+          <option value="farm">みんなではたけ</option>
+          <option value="school">はたけと暮らし塾</option>
+          <option value="extra">臨時・野良作業</option>
+        </select>
+      </div>
+      <div class="f">
+        <label>見出し</label>
+        <input type="text" id="f_label" placeholder="みんなではたけ">
+      </div>
+      <div class="f">
+        <label>内容</label>
+        <textarea id="f_task" placeholder="有料イベント：かかし作り／季節の作業：草刈り　※雨天時は9月19日(土)に延期"></textarea>
+        <div class="note">「／」で区切ると別の行に、「※」から後ろは小さな注意書きになります。</div>
+      </div>
+      <div class="f">
+        <label>場所（決まっていれば）</label>
+        <input type="text" id="f_place" placeholder="空欄なら「当日ご案内します」と出ます">
+      </div>
+      <div class="f">
+        <label>定員（あれば）</label>
+        <input type="number" id="f_cap" placeholder="空欄でも大丈夫です">
+      </div>
+      <button class="btn btn-add" id="f_go">この内容で追加する</button>
+      <div class="status" id="f_status"></div>
+    </div>
+  </details>
+
 </div>
 
 <footer>ちきゅうっ子ファーム ／ 奥むさしマーケット結　│　予約</footer>
 
 <script>
 (function(){
-  // GASウェブアプリのURL（セットアップ後にここへ貼る）
   var GAS_URL='https://script.google.com/macros/s/AKfycbyroR9u94e6MU_rjxVxfL9Nk5g35olbe0X972Rr_hxAzBQwCPxiivlGNycWyxm30E3RWQ/exec';
-  // LIFFアプリのID（LINE Developers Console で発行したものを貼る）
   var LIFF_ID='2011402522-AcflxZaL';
-  // 参加者どうしでお名前を見せるか。true にすると各活動カードに参加者名が並ぶ。
-  // false のときは人数だけを表示します。
-  var SHOW_NAMES = true;
+  var SHOW_NAMES = true;   // 参加者のお名前を出すか
 
   var activities=[], signups=[];
+  var ME=null, IS_MEMBER=false, IS_ADMIN=false;
+
   function $(id){return document.getElementById(id);}
-  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
   function setStatus(t){$('status').textContent=t||'';}
 
-  var ME=null;           // {userId, displayName, pictureUrl}
-  var IS_MEMBER=false;
+  function countFor(id){ return signups.filter(function(s){return s.activity_id==id;}).length; }
+  function joinedBy(id){ return !!(ME && signups.some(function(s){
+    return s.activity_id==id && String(s.user_id)===String(ME.userId);})); }
+  function namesFor(id){ return signups.filter(function(s){return s.activity_id==id;})
+    .map(function(s){return s.name;}).filter(Boolean); }
 
-  // 予約人数を数える
-  function countFor(actId){ return signups.filter(function(s){return s.activity_id==actId;}).length; }
-  function joinedBy(actId){ return !!(ME && signups.some(function(s){return s.activity_id==actId && String(s.user_id)===String(ME.userId);})); }
-  function namesFor(actId){ return signups.filter(function(s){return s.activity_id==actId;}).map(function(s){return s.name;}); }
+  // id が A20260904 の形なら日付として扱う
+  function ymdOf(a){ var m=/^A(\d{8})$/.exec(String(a.id||'')); return m?parseInt(m[1],10):null; }
+  function todayYmd(){ var d=new Date();
+    return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate(); }
+
+  // 「有料イベント：かかし作り／季節の作業：草刈り　※雨天時は…」を読みやすく分ける
+  function renderTask(task){
+    task=String(task||'').trim(); if(!task) return '';
+    var parts=task.split('※');
+    var main=parts[0].trim().replace(/[\s　]+$/,'');
+    var note=parts.slice(1).join('※').trim();
+    var html=main.split(/[／\/]/).map(function(seg){
+      seg=seg.trim(); if(!seg) return '';
+      var i=seg.indexOf('：'); if(i<0) i=seg.indexOf(':');
+      var k = i>0 ? seg.slice(0,i).trim() : '内容';
+      var v = i>0 ? seg.slice(i+1).trim() : seg;
+      if(!v) return '';
+      return '<div class="li"><span class="k">'+esc(k)+'</span><span class="v">'+esc(v)+'</span></div>';
+    }).join('');
+    if(note) html+='<div class="rain">※'+esc(note)+'</div>';
+    return html;
+  }
+
+  function cardHtml(a, isNext){
+    var kc = a.kind==='school'?'k-school':(a.kind==='extra'?'k-extra':'k-farm');
+    var cnt = countFor(a.id), joined = joinedBy(a.id);
+    var placeTxt = a.place ? esc(a.place) : '場所は当日ご案内します';
+    if(a.cap) placeTxt += '　/ 定員'+esc(a.cap)+'名';
+    var names='';
+    if(SHOW_NAMES){
+      var ns=namesFor(a.id);
+      if(ns.length) names='<div class="names">参加予定：'+ns.map(esc).join('、')+'</div>';
+    }
+    return '<div class="act '+kc+(isNext?' next':'')+(joined&&!isNext?' mine':'')+'">'
+      + '<div class="ah"><div>'
+        + '<span class="kind">'+esc(a.label||'活動')+'</span>'
+        + '<div class="date">'+esc(a.date)+'</div>'
+        + '<div class="place">'+placeTxt+'</div>'
+      + '</div><div class="cnt"><div class="c">'+cnt+'</div><div class="cl">人が行く</div></div></div>'
+      + renderTask(a.task)
+      + (joined?'<div class="youtag">✓ 行くと答えています</div>':'')
+      + names
+      + (joined
+          ? '<button class="btn btn-cancel" data-cancel="'+esc(a.id)+'">やっぱり行けない</button>'
+          : '<button class="btn btn-go" data-go="'+esc(a.id)+'">この日に行く</button>')
+      + (IS_ADMIN ? '<div class="adm"><button data-del="'+esc(a.id)+'">この活動日を消す</button></div>' : '')
+      + '</div>';
+  }
+
+  function render(){
+    var today=todayYmd();
+    var list=activities.filter(function(a){ var y=ymdOf(a); return y===null || y>=today; });
+    list.sort(function(x,y){ var a=ymdOf(x), b=ymdOf(y);
+      if(a===null&&b===null) return 0; if(a===null) return 1; if(b===null) return -1; return a-b; });
+
+    if(!list.length){
+      $('nextwrap').innerHTML='<div class="empty">いまのところ、予定されている活動日はありません。</div>';
+      $('restwrap').innerHTML='';
+    } else {
+      $('nextwrap').innerHTML='<div class="sect">つぎの活動日</div>'+cardHtml(list[0],true);
+      $('restwrap').innerHTML = list.length>1
+        ? '<div class="sect">そのあとの予定</div>'+list.slice(1).map(function(a){return cardHtml(a,false);}).join('')
+        : '';
+    }
+
+    document.querySelectorAll('button[data-go]').forEach(function(b){
+      b.addEventListener('click',function(){ signup(b.getAttribute('data-go')); }); });
+    document.querySelectorAll('button[data-cancel]').forEach(function(b){
+      b.addEventListener('click',function(){ cancel(b.getAttribute('data-cancel')); }); });
+    document.querySelectorAll('button[data-del]').forEach(function(b){
+      b.addEventListener('click',function(){
+        if(b.classList.contains('arm')){ delActivity(b.getAttribute('data-del')); }
+        else { b.classList.add('arm'); b.textContent='本当に消す？（もう一度押す）';
+               setTimeout(function(){ b.classList.remove('arm'); b.textContent='この活動日を消す'; },5000); }
+      }); });
+  }
 
   function load(){
-    if(!GAS_URL){ setStatus('準備中：GASのURLが設定されていません'); return; }
     setStatus('読み込み中…');
     var u=GAS_URL+(ME?('?user_id='+encodeURIComponent(ME.userId)):'');
-    fetch(u).then(function(r){return r.json();}).then(function(d){
+    return fetch(u).then(function(r){return r.json();}).then(function(d){
       if(!d.ok) throw new Error(d.error||'読み込み失敗');
       activities=d.activities||[]; signups=d.signups||[];
-      if(d.me) IS_MEMBER=!!d.me.is_member;
+      if(d.me){ IS_MEMBER=!!d.me.is_member; IS_ADMIN=!!d.me.is_admin; }
       $('guestbox').hidden = !(ME && !IS_MEMBER);
+      $('adminbox').hidden = !IS_ADMIN;
       setStatus(''); render();
     }).catch(function(e){ setStatus('読み込みエラー：'+e.message); });
   }
@@ -157,69 +328,66 @@
       .catch(function(e){ setStatus('更新エラー：'+e.message); throw e; });
   }
 
-  function signup(actId){ if(!ME){setStatus('LINEの情報を取得できていません');return;}
-    post({action:'signup',activity_id:actId,user_id:ME.userId,name:ME.displayName}).then(load); }
-  function cancel(actId){ if(!ME)return;
-    post({action:'cancel',activity_id:actId,user_id:ME.userId}).then(load); }
+  function signup(id){ if(!ME){setStatus('LINEの情報を取得できていません');return;}
+    post({action:'signup',activity_id:id,user_id:ME.userId,name:ME.displayName}).then(load); }
+  function cancel(id){ if(!ME)return;
+    post({action:'cancel',activity_id:id,user_id:ME.userId}).then(load); }
+  function delActivity(id){ if(!ME)return;
+    post({action:'delActivity',activity_id:id,user_id:ME.userId}).then(load); }
 
-  function render(){
-    // 一番近い活動（配列の先頭）
-    if(activities.length){
-      var t=activities[0], tc=countFor(t.id);
-      $('today').innerHTML='<div class="lbl">◆ いちばん近い活動日</div>'
-        +'<div class="big"><span class="n">'+tc+'</span><span class="u">人が参加予定</span></div>'
-        +'<div class="dt">'+esc(t.date)+'　'+esc(t.label||'')+(t.task?'（'+esc(t.task)+'）':'')+'</div>';
-    } else {
-      $('today').innerHTML='<div class="lbl">◆ 活動日</div><div class="dt">まだ活動が登録されていません。</div>';
-    }
+  // ── 運営：活動日の追加 ──
+  var WD=['日','月','火','水','木','金','土'];
+  function jpDate(iso){
+    var p=String(iso).split('-'); if(p.length!==3) return '';
+    var y=+p[0], m=+p[1], d=+p[2];
+    var w=WD[new Date(y,m-1,d).getDay()];
+    var now=new Date();
+    var head=(y===now.getFullYear())?'':(y+'年');
+    return head+m+'月'+d+'日('+w+')';
+  }
+  function idFromIso(iso){ return 'A'+String(iso).replace(/-/g,''); }
 
-    $('acts').innerHTML=activities.map(function(a){
-      var kc=a.kind==='school'?'k-school':(a.kind==='extra'?'k-extra':'k-farm');
-      var cnt=countFor(a.id), joined=joinedBy(a.id);
-      var capTxt=a.cap?('　/ 定員'+a.cap):'';
-      var taskTxt=a.task?'<div class="task"><b>内容</b>'+esc(a.task)+'</div>':'';
-      var youTxt=joined?'<div class="youtag">✓ あなたは参加予定です</div>':'';
-      var memTxt='';
-      if(SHOW_NAMES){
-        var ns=namesFor(a.id);
-        if(ns.length) memTxt='<div class="task"><b>参加予定</b>'+ns.map(esc).join('、')+'</div>';
-      }
-      return '<div class="act '+kc+(joined?' mine':'')+'">'
-        +'<div class="ah"><div><span class="kind">'+esc(a.label||'活動')+'</span>'
-          +'<div class="date">'+esc(a.date)+'</div><div class="place">'+(a.place?esc(a.place):'場所は当日ご案内します')+capTxt+'</div>'+taskTxt+'</div>'
-          +'<div class="cnt"><div class="c">'+cnt+'</div><div class="cl">人が参加予定</div></div></div>'
-        +memTxt+youTxt
-        +'<div class="actions">'+(joined
-          ?'<button class="btn btn-cancel" data-cancel="'+a.id+'">やっぱり行けない</button>'
-          :'<button class="btn btn-go" data-go="'+a.id+'">この日に行く</button>')+'</div>'
-      +'</div>';
-    }).join('');
+  var LABELS={farm:'みんなではたけ',school:'はたけと暮らし塾',extra:'野良作業'};
+  var fk=$('f_kind'), fl=$('f_label');
+  if(fk){ fk.addEventListener('change',function(){ fl.value=LABELS[fk.value]||''; }); }
 
-    $('acts').querySelectorAll('button[data-go]').forEach(function(b){
-      b.addEventListener('click',function(){ signup(b.getAttribute('data-go')); });
-    });
-    $('acts').querySelectorAll('button[data-cancel]').forEach(function(b){
-      b.addEventListener('click',function(){ cancel(b.getAttribute('data-cancel')); });
+  if($('f_go')){
+    $('f_go').addEventListener('click',function(){
+      var iso=$('f_date').value;
+      if(!iso){ $('f_status').textContent='日にちを選んでください'; return; }
+      var payload={
+        action:'addActivity', user_id:ME?ME.userId:'',
+        id:idFromIso(iso), kind:fk.value, date:jpDate(iso),
+        place:$('f_place').value.trim(),
+        label:(fl.value.trim()||LABELS[fk.value]||'活動'),
+        task:$('f_task').value.trim(),
+        cap:$('f_cap').value.trim()
+      };
+      $('f_status').textContent='追加しています…';
+      post(payload).then(function(){
+        $('f_status').textContent='追加しました：'+payload.date;
+        $('f_date').value=''; $('f_task').value=''; $('f_place').value=''; $('f_cap').value='';
+        return load();
+      }).catch(function(e){ $('f_status').textContent='追加できませんでした：'+e.message; });
     });
   }
 
-  // ── 起動：LINEのアカウントで本人を特定する ──
+  // ── 起動 ──
   function showMe(){
-    $('mepic').src = ME.pictureUrl || '';
-    $('mename').textContent = ME.displayName + ' さん';
-    $('mebar').hidden = false;
+    if(ME.pictureUrl) $('mepic').src=ME.pictureUrl;
+    $('mename').textContent=ME.displayName+' さん';
+    $('mebar').hidden=false;
   }
   function boot(){
-    if(!LIFF_ID){ setStatus('準備中：LIFF IDが設定されていません'); return; }
     setStatus('LINEの情報を確認中…');
     liff.init({ liffId: LIFF_ID }).then(function(){
       if(!liff.isLoggedIn()){ liff.login(); return; }
       return liff.getProfile().then(function(p){
-        ME = { userId:p.userId, displayName:p.displayName, pictureUrl:p.pictureUrl };
+        ME={userId:p.userId,displayName:p.displayName,pictureUrl:p.pictureUrl};
         showMe(); load();
       });
     }).catch(function(e){
-      setStatus('LINEの情報を取得できませんでした（'+(e && e.message ? e.message : e)+'）。LINEアプリから開いてください。');
+      setStatus('LINEの情報を取得できませんでした（'+(e&&e.message?e.message:e)+'）。LINEアプリから開いてください。');
     });
   }
   boot();
