@@ -440,6 +440,14 @@
     $('mebar').hidden=false;
   }
   function boot(){
+    // 確認用：URLに ?preview がついているときは、ログインせずに「見るだけ」で表示する
+    if(/[?&]preview/.test(location.search)){
+      var pb=document.createElement('div');
+      pb.textContent='確認用の表示です（ログインなし・見るだけ）';
+      pb.style.cssText='background:#2b2722;color:#fce9b8;text-align:center;font-size:12px;padding:7px';
+      document.body.insertBefore(pb, document.body.firstChild);
+      load(); return;
+    }
     setStatus('LINEの情報を確認中…');
     liff.init({ liffId: LIFF_ID }).then(function(){
       if(!liff.isLoggedIn()){ liff.login(); return; }
