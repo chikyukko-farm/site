@@ -116,7 +116,7 @@
   .f label{display:block;font-size:11.5px;font-weight:700;color:var(--ink);margin-bottom:3px}
   .f input,.f select,.f textarea{width:100%;border:1px solid var(--border);border-radius:8px;padding:9px 11px;
     font-size:15px;font-family:'Zen Kaku Gothic New';background:#fff;color:var(--sumi)}
-  .f textarea{min-height:64px;line-height:1.6}
+  .f textarea{min-height:150px;line-height:1.6}
   .f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:var(--yamabuki)}
   .f .note{font-size:10.5px;color:var(--muted);margin-top:3px;line-height:1.5}
   .btn-add{background:var(--leaf-d);color:#fff;box-shadow:0 2px 0 #2c3a23}
@@ -172,7 +172,7 @@
   <a class="schedlink" href="https://corerelease.my.canva.site/dahjtmj6syu" target="_blank" rel="noopener">年間スケジュールを見る →</a>
 
   <details class="admin" id="adminbox" hidden>
-    <summary>＋ 活動日を追加する（運営）</summary>
+    <summary id="f_summary">＋ 活動日を追加する（運営）</summary>
     <div class="body">
       <div class="f">
         <label>日にち</label>
@@ -194,7 +194,7 @@
       <div class="f">
         <label>内容</label>
         <textarea id="f_task" placeholder="有料イベント：かかし作り／季節の作業：草刈り　※雨天時は9月19日(土)に延期"></textarea>
-        <div class="note">「／」で区切ると別の行に、「※」から後ろは小さな注意書きになります。</div>
+        <div class="note">「／」「/」や改行で区切ると、別の行になります。<br>「参加費　大人3500円」「時間　10:00-16:00」のように、最初の言葉のあとに全角スペースか「：」を入れると見出しになります。<br>「※」から後ろ（その行の中）は、小さな注意書きになります。</div>
       </div>
       <div class="f">
         <label>場所（決まっていれば）</label>
@@ -205,6 +205,7 @@
         <input type="number" id="f_cap" placeholder="空欄でも大丈夫です">
       </div>
       <button class="btn btn-add" id="f_go">この内容で追加する</button>
+      <div class="adm" id="f_cancelwrap" hidden><button id="f_cancel">直すのをやめる</button></div>
       <div class="status" id="f_status"></div>
     </div>
   </details>
@@ -239,22 +240,36 @@
   function todayYmd(){ var d=new Date();
     return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate(); }
 
-  // 「有料イベント：かかし作り／季節の作業：草刈り　※雨天時は…」を読みやすく分ける
+  // 内容の1行を「見出し」と「中身」に分ける
+  //  ・「有料イベント：かかし作り」「晴れ:草刈り」→ 見出しつき
+  //  ・「参加費　大人1名3500円」のように 短い言葉＋全角スペース → 見出しつき
+  //  ・「10:00-13:00」のような時間だけの行 → 見出し「時間」
+  //  ・時間の「:」は区切りとして扱わない
+  function splitKV(seg){
+    var m=/^([^：:]{1,12})：\s*(.+)$/.exec(seg);
+    if(!m) m=/^([^:\d][^:]{0,11}):(?!\d{2})\s*(.+)$/.exec(seg);
+    if(m) return [m[1].trim(), m[2].trim()];
+    m=/^([^\s　\d：:]{1,5})　+(.+)$/.exec(seg);
+    if(m) return [m[1], m[2].trim()];
+    if(/^\d{1,2}:\d{2}\s*[-〜～~]\s*\d{1,2}:\d{2}/.test(seg)) return ['時間', seg];
+    return ['内容', seg];
+  }
+  // 「／」「/」改行 で行に分ける。「※」はその行の中だけを注意書きにする
   function renderTask(task){
     task=String(task||'').trim(); if(!task) return '';
-    var parts=task.split('※');
-    var main=parts[0].trim().replace(/[\s　]+$/,'');
-    var note=parts.slice(1).join('※').trim();
-    var html=main.split(/[／\/]/).map(function(seg){
-      seg=seg.trim(); if(!seg) return '';
-      var i=seg.indexOf('：'); if(i<0) i=seg.indexOf(':');
-      var k = i>0 ? seg.slice(0,i).trim() : '内容';
-      var v = i>0 ? seg.slice(i+1).trim() : seg;
-      if(!v) return '';
-      return '<div class="li"><span class="k">'+esc(k)+'</span><span class="v">'+esc(v)+'</span></div>';
-    }).join('');
-    if(note) html+='<div class="rain">※'+esc(note)+'</div>';
-    return html;
+    var lis=[], notes=[];
+    task.split(/[／\/\n]/).forEach(function(seg){
+      seg=seg.trim(); if(!seg) return;
+      var j=seg.indexOf('※');
+      if(j===0){ var n0=seg.slice(1).trim(); if(n0) notes.push(n0); return; }
+      if(j>0){ var n1=seg.slice(j+1).trim(); if(n1) notes.push(n1); seg=seg.slice(0,j).trim(); }
+      if(!seg) return;
+      var kv=splitKV(seg);
+      lis.push(kv[0]==='内容'
+        ? '<div class="li"><span class="v">'+esc(kv[1])+'</span></div>'
+        : '<div class="li"><span class="k">'+esc(kv[0])+'</span><span class="v">'+esc(kv[1])+'</span></div>');
+    });
+    return lis.join('') + notes.map(function(n){ return '<div class="rain">※'+esc(n)+'</div>'; }).join('');
   }
 
   function cardHtml(a, isNext){
@@ -279,7 +294,7 @@
       + (joined
           ? '<button class="btn btn-cancel" data-cancel="'+esc(a.id)+'">やっぱり行けない</button>'
           : '<button class="btn btn-go" data-go="'+esc(a.id)+'">この日に行く</button>')
-      + (IS_ADMIN ? '<div class="adm"><button data-del="'+esc(a.id)+'">この活動日を消す</button></div>' : '')
+      + (IS_ADMIN ? '<div class="adm"><button data-edit="'+esc(a.id)+'">この活動日を直す</button><button data-del="'+esc(a.id)+'">この活動日を消す</button></div>' : '')
       + '</div>';
   }
 
@@ -312,6 +327,8 @@
       b.addEventListener('click',function(){ signup(b.getAttribute('data-go')); }); });
     document.querySelectorAll('button[data-cancel]').forEach(function(b){
       b.addEventListener('click',function(){ cancel(b.getAttribute('data-cancel')); }); });
+    document.querySelectorAll('button[data-edit]').forEach(function(b){
+      b.addEventListener('click',function(){ startEdit(b.getAttribute('data-edit')); }); });
     document.querySelectorAll('button[data-del]').forEach(function(b){
       b.addEventListener('click',function(){
         if(b.classList.contains('arm')){ delActivity(b.getAttribute('data-del')); }
@@ -364,24 +381,55 @@
   var fk=$('f_kind'), fl=$('f_label');
   if(fk){ fk.addEventListener('change',function(){ fl.value=LABELS[fk.value]||''; }); }
 
+  // ── 運営：活動日を直す ──
+  var EDIT_ID=null;
+  function isoFromId(id){ var m=/^A(\d{4})(\d{2})(\d{2})$/.exec(String(id||'')); return m?(m[1]+'-'+m[2]+'-'+m[3]):''; }
+  function resetForm(){
+    EDIT_ID=null;
+    $('f_date').value=''; $('f_task').value=''; $('f_place').value=''; $('f_cap').value='';
+    fk.value='farm'; fl.value='';
+    $('f_summary').textContent='＋ 活動日を追加する（運営）';
+    $('f_go').textContent='この内容で追加する';
+    $('f_cancelwrap').hidden=true;
+  }
+  function startEdit(id){
+    var a=activities.filter(function(x){return String(x.id)===String(id);})[0]; if(!a) return;
+    EDIT_ID=String(a.id);
+    $('f_date').value=isoFromId(a.id);
+    fk.value=(a.kind==='school'||a.kind==='extra')?a.kind:'farm';
+    fl.value=a.label||''; $('f_task').value=a.task||''; $('f_place').value=a.place||''; $('f_cap').value=a.cap||'';
+    $('f_summary').textContent='✎ '+a.date+' を直しています（運営）';
+    $('f_go').textContent='この内容で直す';
+    $('f_cancelwrap').hidden=false;
+    $('f_status').textContent='';
+    $('adminbox').open=true;
+    $('adminbox').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  if($('f_cancel')){ $('f_cancel').addEventListener('click',function(){ resetForm(); $('f_status').textContent=''; }); }
+
   if($('f_go')){
     $('f_go').addEventListener('click',function(){
       var iso=$('f_date').value;
-      if(!iso){ $('f_status').textContent='日にちを選んでください'; return; }
+      var editing=!!EDIT_ID;
+      var orig=editing?activities.filter(function(x){return String(x.id)===EDIT_ID;})[0]:null;
+      if(!iso && !editing){ $('f_status').textContent='日にちを選んでください'; return; }
       var payload={
-        action:'addActivity', user_id:ME?ME.userId:'',
-        id:idFromIso(iso), kind:fk.value, date:jpDate(iso),
+        action: editing?'updateActivity':'addActivity', user_id:ME?ME.userId:'',
+        id: iso?idFromIso(iso):EDIT_ID,
+        date: iso?jpDate(iso):(orig?orig.date:''),
+        kind:fk.value,
         place:$('f_place').value.trim(),
         label:(fl.value.trim()||LABELS[fk.value]||'活動'),
         task:$('f_task').value.trim(),
         cap:$('f_cap').value.trim()
       };
-      $('f_status').textContent='追加しています…';
+      if(editing) payload.old_id=EDIT_ID;
+      $('f_status').textContent=editing?'直しています…':'追加しています…';
       post(payload).then(function(){
-        $('f_status').textContent='追加しました：'+payload.date;
-        $('f_date').value=''; $('f_task').value=''; $('f_place').value=''; $('f_cap').value='';
+        $('f_status').textContent=(editing?'直しました：':'追加しました：')+payload.date;
+        resetForm();
         return load();
-      }).catch(function(e){ $('f_status').textContent='追加できませんでした：'+e.message; });
+      }).catch(function(e){ $('f_status').textContent=(editing?'直せませんでした：':'追加できませんでした：')+e.message; });
     });
   }
 
@@ -392,6 +440,14 @@
     $('mebar').hidden=false;
   }
   function boot(){
+    // 確認用：URLに ?preview がついているときは、ログインせずに「見るだけ」で表示する
+    if(/[?&]preview/.test(location.search)){
+      var pb=document.createElement('div');
+      pb.textContent='確認用の表示です（ログインなし・見るだけ）';
+      pb.style.cssText='background:#2b2722;color:#fce9b8;text-align:center;font-size:12px;padding:7px';
+      document.body.insertBefore(pb, document.body.firstChild);
+      load(); return;
+    }
     setStatus('LINEの情報を確認中…');
     liff.init({ liffId: LIFF_ID }).then(function(){
       if(!liff.isLoggedIn()){ liff.login(); return; }
